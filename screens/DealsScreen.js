@@ -1,19 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import CategoriesScreen from './CategoriesScreen';
-import DealsScreen from './DealsScreen';
+import React from "react";
+import Deals from "../Components/Deals";
 
-const Stack = createStackNavigator();
-
-const AppNavigator = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="CategoriesScreen">
-        <Stack.Screen name="CategoriesScreen" component={CategoriesScreen} />
-        <Stack.Screen name="DealsScreen" component={DealsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+const DealsScreen = () => {
+  return <Deals></Deals>;
 };
 
-export default AppNavigator;
+export default DealsScreen;
