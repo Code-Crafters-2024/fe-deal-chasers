@@ -9,61 +9,26 @@ import {
   Share,
 } from "react-native";
 import { styles } from "../styles";
+import { supabase } from '../lib/supabase';
 
 const Deals = () => {
   const [deals, setDeals] = useState([]);
 
-  /*dummy deals data */
-  const dealsData = [
-    {
-      title: "Laptop",
-      category: "Electronics",
-      location: "place",
-      image:
-        "https://as1.ftcdn.net/v2/jpg/00/95/43/62/1000_F_95436240_BEyGcwpTvjh2JOKvIWm0zarklfVTpdDr.jpg",
-      votes: "1",
-      body: "this is a good deal buy now",
-      price: "3",
-      user_id: "1",
-      deal_id: "1",
-      date: "25/3/24",
-      expiry: "28/3/24",
-    },
-    {
-      title: "Shoes",
-      category: "Fashion",
-      location: "place",
-      image:
-        "https://as2.ftcdn.net/v2/jpg/02/11/11/15/1000_F_211111574_VLtzH6ORhebXvnJXjlkAkaUuAftnvmJH.jpg",
-      votes: "30",
-      body: "great deal!",
-      price: "10",
-      user_id: "3",
-      deal_id: "2",
-      date: "25/3/24",
-      expiry: "28/3/24",
-    },
-    {
-      title: "Bicycle",
-      category: "Sports & Outdoors",
-      location: "place",
-      image:
-        "https://as1.ftcdn.net/v2/jpg/02/34/95/64/1000_F_234956425_JFdJ1zSitfgwvJx5TD9xbXlOBOTgeqKn.jpg",
-      votes: "2",
-      body: "on offer now",
-      price: "5",
-      user_id: "3",
-      deal_id: "3",
-      date: "25/3/24",
-      expiry: "28/3/24",
-    },
-  ];
-
   useEffect(() => {
-    const currentDeals = [...new Set(dealsData.map((deal) => deal))];
-
-    setDeals(currentDeals);
+    fetchDeals();
   }, []);
+
+  const fetchDeals = async () => {
+    try {
+      const { data, error } = await supabase.from('deals').select('*');
+      if (error) {
+        throw error;
+      }
+      setDeals(data);
+    } catch (error) {
+      console.error('Error fetching deals:', error.message);
+    }
+  };
 
   const url =
     "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; //placeholder sharing url
@@ -91,7 +56,7 @@ const Deals = () => {
       style={styles.dealsCard}
       onPress={() => handleDealsPress(item)}
     >
-      <Image source={{ uri: item.image }} style={styles.dealsImage} />
+      <Image source={{ uri: item.image_url }} style={styles.dealsImage} /> 
       <View style={styles.dealsInfo}>
         <Text style={styles.dealsTitle}>{item.title}</Text>
         <View style={styles.dealsColumnContainer}>
@@ -113,6 +78,8 @@ const Deals = () => {
       </View>
     </TouchableOpacity>
   );
+  
+
   const handleDealsPress = (deal) => {
     console.log("Navigating to single deal page:", deal);
   };
