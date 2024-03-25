@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { styles } from '../styles';
+import { supabase } from '../lib/supabase';
 
 const CategoriesScreen = () => {
   const [categories, setCategories] = useState([]);
 
-  // Dummy deals data (replace with data from backend/API)
-  const dealsData = [
-    { id: 1, title: 'Deal 1', category: 'Electronics' },
-  { id: 2, title: 'Deal 2', category: 'Fashion' },
-  { id: 3, title: 'Deal 3', category: 'Electronics' },
-  { id: 4, title: 'Deal 4', category: 'Books' },
-  { id: 5, title: 'Deal 5', category: 'Fashion' },
-  { id: 6, title: 'Deal 6', category: 'Home & Kitchen' },
-  { id: 7, title: 'Deal 7', category: 'Health & Beauty' },
-  { id: 8, title: 'Deal 8', category: 'Sports & Outdoors' },
-  ];
-
   useEffect(() => {
-    // Extract unique categories from deals data
-    const uniqueCategories = [...new Set(dealsData.map(deal => deal.category))];
-    setCategories(uniqueCategories);
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase.from('categories').select('name');
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        setCategories(data.map(category => category.name));
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error.message);
+    }
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.categoryCard} onPress={() => handleCategoryPress(item)}>
