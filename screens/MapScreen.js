@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Pressable, StyleSheet, View, Text } from "react-native";
 import { getDeals } from "../utils/supabase";
@@ -42,11 +42,16 @@ const MapScreen = () => {
     }
   }, [location])
 
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
+  function handleZoom(plus){
+    if(plus){
+        return setRegion((currRegion)=>{
+            return {...currRegion, latitudeDelta: currRegion.latitudeDelta-0.01, longitudeDelta: 0}
+        })
+    } else {
+        return setRegion((currRegion)=>{
+            return {...currRegion, latitudeDelta: currRegion.latitudeDelta+0.01, longitudeDelta: 0}
+        })
+    }
   }
 
   return (
@@ -60,12 +65,12 @@ const MapScreen = () => {
       provider="google"
     >
         {deals.map((deal)=>{
-            return <Marker key={deal.deal_id} coordinate={{latitude: deal.location[0], longitude: deal.location[1]}} title={deal.title} />
+            return <Marker key={deal.deal_id} coordinate={{latitude: deal.location[0], longitude: deal.location[1]}} title={deal.title} description={deal.body}></Marker>
         })}
     </MapView>
         <View style={styles.zoomContainer}>
-            <Pressable style={styles.zoomButtons}><MaterialCommunityIcons name={'plus-thick'} size={20}/></Pressable>
-            <Pressable style={styles.zoomButtons}><MaterialCommunityIcons name={'minus-thick'} size={20}/></Pressable>
+            <Pressable style={styles.zoomButtons} onPress={()=>handleZoom(true)}><MaterialCommunityIcons name={'plus-thick'} size={20}/></Pressable>
+            <Pressable style={styles.zoomButtons} onPress={()=>handleZoom(false)}><MaterialCommunityIcons name={'minus-thick'} size={20}/></Pressable>
         </View>
     </View>
   );
