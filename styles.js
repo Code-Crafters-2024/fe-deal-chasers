@@ -58,47 +58,17 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+
+
+  /* CATEGORY CARD CSS */
+
   CategoryContainer: {
     justifyContent: "center",
     paddingHorizontal: 20,
     marginTop: 40,
   },
   categoryCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: "90%",
-    height: 90,
-  },
-  categoryImage: {
-    width: 100,
-    height: 80,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  categoryInfo: {
-    flex: 1,
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  categoryDescription: {
-    fontSize: 14,
-  },
-  categoriesList: {
-    alignItems: "center",
-  },
-  dealsCard: {
+    position: 'relative',
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#ffffff",
@@ -111,10 +81,47 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: "100%",
-    height: 150,
+    minHeight: 120,
   },
-  dealsList: {
+  categoryImage: {
+    width: 100,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  categoryInfo: {
+    flex: 1,
+  },
+  categoryTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+  categoryDescription: {
+    fontSize: 12,
+  },
+
+  /* DEALS CARD CSS */
+  dealsContainer: {
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    marginTop: 40,
+  },
+  dealsCard: {
+    position: 'relative',
+    flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: "100%",
+    minHeight: 120,
   },
   dealsImage: {
     width: 100,
@@ -122,55 +129,36 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
   },
-  dealsContainer: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    marginTop: 40,
-  },
   dealsInfo: {
     flex: 1,
-    flexDirection: "column",
   },
   dealsTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 0,
-    flex: 0.5,
-    alignItems: "stretch",
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 2,
   },
   dealsText: {
     fontSize: 12,
-    marginBottom: 3,
+    marginBottom: 2,
   },
-  dealsPrice: {
-    fontSize: 12,
-    marginBottom: 3,
-    fontWeight: "bold",
-  },
-  shareButton: {
-    backgroundColor: "green",
-    padding: 10,
-    borderRadius: 8,
-  },
-  shareButtonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  dealsTitleBox: {
-    backgroundColor: "yellow",
-  },
-  dealsInfoColumns: {
-    width: "50%",
-    padding: 5,
-  },
-  dealsColumnContainer: {
-    flex: 1,
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingHorizontal: 5,
+  shareContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10, 
   },
   dealsShareImage: {
-    height: 45,
-    width: 45,
+    width: 20,
+    height: 20,
+  },
+  resetButton: {
+    backgroundColor: "#FF6347",
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    alignSelf: "center",
+  },
+  resetButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
