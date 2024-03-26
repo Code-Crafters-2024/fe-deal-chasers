@@ -101,19 +101,45 @@ export const styles = StyleSheet.create({
     fontSize: 12,
   },
 
+  dropdownContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  dropdown: {
+    flex: 1,
+    marginRight: 5,
+    height: 50,
+  },
+  categoryDropdown: {
+    flex: 1,
+  },
+  sortByDropdown: {
+    flex: 1,
+  },
+  picker: {
+    color: 'black',
+  },
+  pickerItem: {
+    color: "#fff",
+    fontSize: 10,
+  },
+  dealsList: {
+    flexGrow: 1,
+  },
+
   /* DEALS CARD CSS */
   dealsContainer: {
     justifyContent: "center",
-    paddingHorizontal: 20,
-    marginTop: 40,
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
   dealsCard: {
     position: 'relative',
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#ffffff",
-    borderRadius: 10,
-    padding: 10,
+    padding: 5,
     marginBottom: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -122,12 +148,18 @@ export const styles = StyleSheet.create({
     elevation: 5,
     width: "100%",
     minHeight: 120,
+    
   },
   dealsImage: {
-    width: 100,
-    height: 80,
-    borderRadius: 10,
+    width: 90,
+    height: 90,
     marginRight: 10,
+    marginLeft: 5,
+  },
+  priceText: {
+    color: "#FF6347",
+    fontSize: 13,
+    fontWeight: 'bold',
   },
   dealsInfo: {
     flex: 1,
@@ -144,21 +176,34 @@ export const styles = StyleSheet.create({
   shareContainer: {
     position: 'absolute',
     top: 10,
-    right: 10, 
+    right: 10,
   },
   dealsShareImage: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
   },
   resetButton: {
     backgroundColor: "#FF6347",
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 10,
+    padding: 5,
+    marginVertical: 5,
     alignSelf: "center",
+    marginHorizontal: 0,
   },
   resetButtonText: {
     color: "white",
     fontWeight: "bold",
   },
+  getDealButton: {
+    position: 'absolute',
+    bottom: 15,
+    right: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#FF6347', 
+  },
+  getDealText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  }
 });
