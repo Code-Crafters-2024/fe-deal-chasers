@@ -7,6 +7,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import CategoriesScreen from './screens/CategoriesScreen';
 import DealsScreen from './screens/DealsScreen';
 import LoginScreen from './screens/LoginScreen';
+import MapScreen from './screens/MapScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,9 @@ const TabNavigator = () => {
             iconName = 'sale';
           } else if (route.name === 'Login') {
             iconName = 'login';
-          }
+          } else if (route.name === 'Map') {
+            iconName = 'map-search';
+          } 
 
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
         },
@@ -39,6 +42,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Categories" component={CategoriesScreen} />
       <Tab.Screen name="Deals" component={DealsScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Map" component={MapScreen} />
       <Tab.Screen name="Login" component={LoginScreen} />
     </Tab.Navigator>
   );
