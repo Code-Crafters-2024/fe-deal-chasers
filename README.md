@@ -14,7 +14,7 @@ To get the application running on your local machine, follow these steps:
 
 1. Make sure Node.js is installed on your system. If not, you can download it from [here](https://nodejs.org/en/download/).
 2. Fork the repository and clone it to your local machine:
-   `git clone https://github.com/dannygorgon/fe-nc-news`
+   `git clone https://github.com/Code-Crafters-2024/fe-deal-chasers`
 3. Navigate into the cloned directory:
    `cd FeDealChasers`
 4. Install the necessary dependencies:
