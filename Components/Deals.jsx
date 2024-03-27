@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList, TouchableOpacity, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "../styles";
+import { useNavigation } from "@react-navigation/native";
 import { supabase } from '../lib/supabase';
 import DealItem from './DealItem';
 import Search from "./Search";
 
 const Deals = () => {
+  const navigation = useNavigation();
   const [deals, setDeals] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortBy, setSortBy] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    fetchCategories();
-    fetchDeals();
-  }, []);
 
   useEffect(() => {
     fetchDeals();
@@ -101,6 +98,9 @@ const Deals = () => {
     }
   };
 
+  const handleDealsPress = (deal) => {
+    navigation.navigate("SingleDeal", { deal });
+
   return (
     <View style={styles.dealsContainer}>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearch={handleSearch} />
@@ -148,5 +148,4 @@ const Deals = () => {
     </View>
   );
 };
-
 export default Deals;
