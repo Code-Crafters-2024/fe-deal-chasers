@@ -9,15 +9,14 @@ import {
   Share,
 } from "react-native";
 import { styles } from "../styles";
-import { supabase } from '../lib/supabase';
-
+import { supabase } from "../lib/supabase";
+import { useNavigation } from "@react-navigation/native";
 const Deals = () => {
+  const navigation = useNavigation();
   const [deals, setDeals] = useState([]);
-
   useEffect(() => {
     fetchDeals();
   }, []);
-
   const fetchDeals = async () => {
     try {
       const { data, error } = await supabase.from('deals').select('*');
@@ -29,7 +28,6 @@ const Deals = () => {
       console.error('Error fetching deals:', error.message);
     }
   };
-
   const url =
     "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; //placeholder sharing url
   const onShare = async () => {
@@ -50,13 +48,12 @@ const Deals = () => {
       console.log(error.message);
     }
   };
-
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.dealsCard}
       onPress={() => handleDealsPress(item)}
     >
-      <Image source={{ uri: item.image_url }} style={styles.dealsImage} /> 
+      <Image source={{ uri: item.image_url }} style={styles.dealsImage} />
       <View style={styles.dealsInfo}>
         <Text style={styles.dealsTitle}>{item.title}</Text>
         <View style={styles.dealsColumnContainer}>
@@ -65,7 +62,7 @@ const Deals = () => {
             <Text style={styles.dealsPrice}>£{item.price}</Text>
           </View>
           <View style={styles.infoColumns}>
-            <Text style={styles.dealsText}>Date: {item.date}</Text>
+            <Text style={styles.dealsText}>Date: {item.created_at}</Text>
             <Text style={styles.dealsText}>Votes: {item.votes}</Text>
             <Pressable onPress={onShare}>
               <Image
@@ -78,24 +75,22 @@ const Deals = () => {
       </View>
     </TouchableOpacity>
   );
-  
-
   const handleDealsPress = (deal) => {
-    console.log("Navigating to single deal page:", deal);
+    navigation.navigate("SingleDeal", { deal });
   };
-
   return (
-    <View style={styles.dealsContainer}>
-      <FlatList
-        data={deals}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.deal_id}
-        horizontal={false}
-        numColumns={1}
-        contentContainerStyle={styles.dealsList}
-      />
+    <View>
+      <View style={styles.dealsContainer}>
+        <FlatList
+          data={deals}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.deal_id}
+          horizontal={false}
+          numColumns={1}
+          contentContainerStyle={styles.dealsList}
+        />
+      </View>
     </View>
   );
 };
-
 export default Deals;

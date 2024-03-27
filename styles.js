@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -66,7 +65,7 @@ export const styles = StyleSheet.create({
   categoryCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
@@ -101,7 +100,7 @@ export const styles = StyleSheet.create({
   dealsCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
@@ -173,4 +172,58 @@ export const styles = StyleSheet.create({
     height: 45,
     width: 45,
   },
+  singleDealsCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: "100%",
+    height: 150,
+  },
+  singleDealsCommentsCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: "100%",
+    height: 230,
+  },
+  singleDealContainer: {
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingBottom: 160,
+    marginTop: 80,
+  },
+  singleDealsInfo: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  singleDealsText: {
+    fontSize: 12,
+    marginBottom: 3,
+  },
+  singleDealsTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 0,
+    flex: 0.5,
+    alignItems: "stretch",
+  },
+  commentsList: {
+    alignItems: "center",
+  }
 });
