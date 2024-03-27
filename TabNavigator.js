@@ -4,10 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import CategoriesScreen from './screens/CategoriesScreen';
 import DealsScreen from './screens/DealsScreen';
 import LoginScreen from './screens/LoginScreen';
 import SingleDeal from './Components/SingleDeal';
+import MapScreen from './screens/MapScreen';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const DealsStack = () => {
@@ -28,13 +29,14 @@ const TabNavigator = () => {
             iconName = 'home';
           } else if (route.name === 'Profile') {
             iconName = 'account';
-          } else if (route.name === 'Categories') {
-            iconName = 'format-list-bulleted';
           } else if (route.name === 'Deals') {
             iconName = 'sale';
           } else if (route.name === 'Login') {
             iconName = 'login';
-          }
+          } else if (route.name === 'Map') {
+            iconName = 'map-search';
+          } 
+
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
         },
         // tabBarStyle: { backgroundColor: '#333333' },
@@ -42,9 +44,9 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Categories" component={CategoriesScreen} />
       <Tab.Screen name="Deals" component={DealsStack} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Map" component={MapScreen} />
       <Tab.Screen name="Login" component={LoginScreen} />
     </Tab.Navigator>
   );
