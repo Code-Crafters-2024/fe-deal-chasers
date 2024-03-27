@@ -4,9 +4,11 @@ import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { supabase } from "../lib/supabase";
 const SingleDealComments = ({ deal }) => {
   const [comments, setComments] = useState([]);
+
   useEffect(() => {
     fetchComments();
   }, []);
+
   const fetchComments = async () => {
     try {
       const { data, error } = await supabase
