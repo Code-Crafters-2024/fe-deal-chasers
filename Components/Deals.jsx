@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  Pressable,
-  Share,
-} from "react-native";
+import { View, FlatList, TouchableOpacity, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "../styles";
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from '../lib/supabase';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import DealItem from './DealItem';
+import Search from "./Search";
 
 const Deals = () => {
   const navigation = useNavigation();
@@ -20,12 +13,12 @@ const Deals = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortBy, setSortBy] = useState("");
-
- 
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    fetchCategories();
     fetchDeals();
-  }, [selectedCategory, sortBy]);
+  }, [selectedCategory, sortBy, searchQuery]);
 
   const fetchCategories = async () => {
     try {
@@ -52,17 +45,19 @@ const Deals = () => {
         if (sortBy === 'price') {
           return a.price - b.price;
         } else if (sortBy === 'date') {
-          return new Date(b.created_at) - new Date(a.created_at);
+          return new Date(a.created_at) - new Date(b.created_at);
         } else if (sortBy === 'votes') {
           return b.votes - a.votes;
         }
       });
+      if (searchQuery.trim() !== "") {
+        data = data.filter(deal => deal.title.toLowerCase().includes(searchQuery.toLowerCase()));
+      }
       setDeals(data);
     } catch (error) {
       console.error('Error fetching deals:', error.message);
     }
   };
-
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
@@ -75,20 +70,16 @@ const Deals = () => {
   const handleReset = () => {
     setSelectedCategory(null);
     setSortBy(null);
+    setSearchQuery("");
   };
 
-  useEffect(() => {
+  const handleSearch = () => {
     fetchDeals();
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    if (selectedCategory !== null) {
-      fetchDeals();
-    }
-  }, [selectedCategory]);
+  };
 
   const url =
     "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; //placeholder sharing url
+
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -107,50 +98,15 @@ const Deals = () => {
       console.log(error.message);
     }
   };
-  const renderItem = ({ item }) => {
-    const category = categories.find(cat => cat.category_id === item.category_id);
-
-    const formattedDate = new Date(item.created_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    return (
-      <TouchableOpacity
-        style={styles.dealsCard}
-        onPress={() => handleDealsPress(item)}
-      >
-        <Image source={{ uri: item.image_url }} style={styles.dealsImage} />
-        <View style={styles.dealsInfo}>
-          <Text style={styles.dealsTitle}>{item.title}</Text>
-          <Text style={styles.dealsText}>Category: {category ? category.name : 'N/A'}</Text>
-          <Text style={styles.dealsText}>Added: {formattedDate}</Text>
-          <Text style={styles.dealsText}>Votes: {item.votes}</Text>
-          <Text style={[styles.dealsText, styles.priceText]}>Price: £{item.price}</Text>
-        </View>
-        <View style={styles.shareContainer}>
-          <Pressable onPress={onShare}>
-              <Icon name="share" size={24} color="#FF6347" />
-          </Pressable>
-        </View>
-            
-            
-        <TouchableOpacity
-          style={styles.getDealButton}
-          onPress={() => handleGetDeal(item.link)}
-        >
-          <Text style={styles.getDealText}>Get Deal</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-    );
-  };
-
 
   const handleDealsPress = (deal) => {
     navigation.navigate("SingleDeal", { deal });
   };
+
   return (
     <View style={styles.dealsContainer}>
+      <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearch={handleSearch} />
+
       <View style={styles.dropdownContainer}>
         <View style={[styles.dropdown, styles.categoryDropdown]}>
           <Picker
@@ -158,7 +114,7 @@ const Deals = () => {
             onValueChange={(itemValue) => handleCategoryChange(itemValue)}
             style={styles.picker}
             itemStyle={styles.pickerItem}>
-            <Picker.Item label="Filter By" value={null} />
+            <Picker.Item label="Filter" value={null} />
             {categories.map(category => (
               <Picker.Item key={category.category_id} label={category.name} value={category.category_id} />
             ))}
@@ -170,20 +126,23 @@ const Deals = () => {
             onValueChange={(itemValue) => handleSortByChange(itemValue)}
             style={styles.picker}
             itemStyle={styles.pickerItem}>
-            <Picker.Item label="Sort by" value={""} />
-            <Picker.Item label="Price" value="price" />
-            <Picker.Item label="Date" value="date" />
-            <Picker.Item label="Votes" value="votes" />
+            <Picker.Item label="Sort" value={""} />
+            <Picker.Item label="Price (lowest to highest)" value="price" />
+            <Picker.Item label="Date (newest to oldest)" value="date" />
+            <Picker.Item label="Votes (most to least)" value="votes" />
           </Picker>
         </View>
         <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
           <Text style={styles.resetButtonText}>Reset</Text>
         </TouchableOpacity>
       </View>
+
       <FlatList
         data={deals}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.deal_id}
+        renderItem={({ item }) => (
+          <DealItem item={item} categories={categories} onShare={onShare} onPress={handleDealsPress}  />
+        )}
+        keyExtractor={(item) => item.deal_id.toString()}
         horizontal={false}
         numColumns={1}
         contentContainerStyle={styles.dealsList}
@@ -191,4 +150,5 @@ const Deals = () => {
     </View>
   );
 };
+
 export default Deals;

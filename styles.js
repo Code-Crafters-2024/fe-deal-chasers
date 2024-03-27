@@ -295,5 +295,11 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginRight: 10,
-  }
-})
+  },
+  searchContainer: {
+    backgroundColor: "white",
+    padding: 5,
+    marginVertical: 10,
+  },
+});
+
