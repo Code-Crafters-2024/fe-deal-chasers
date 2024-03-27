@@ -205,5 +205,10 @@ export const styles = StyleSheet.create({
   getDealText: {
     fontSize: 12,
     fontWeight: 'bold',
-  }
+  },
+  searchContainer: {
+    backgroundColor: "white",
+    padding: 5,
+    marginVertical: 10,
+  },
 });
