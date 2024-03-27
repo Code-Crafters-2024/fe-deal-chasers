@@ -234,7 +234,7 @@ export const styles = StyleSheet.create({
   singleDealContainer: {
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingBottom: 160,
+    paddingBottom: 230,
     marginTop: 80,
   },
   singleDealsInfo: {
@@ -259,4 +259,41 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
+  commentsFormContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  commentsFormTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  commentsFormInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 20,
+    width: '70%',
+  },
+  commentCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  commentInput: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginRight: 10,
+  }
 })
