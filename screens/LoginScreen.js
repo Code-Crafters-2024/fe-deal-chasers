@@ -12,7 +12,6 @@ const LoginScreen = () => {
 
   const handleSignUp = () => {
     console.log('Navigating to sign-up screen...');
-    // Implement navigation logic to the sign-up screen
   };
 
   return (
