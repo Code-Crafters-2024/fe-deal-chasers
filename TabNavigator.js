@@ -52,7 +52,7 @@ const TabNavigator = () => {
           fontWeight: 'bold',
         }
       }} />
-      <Tab.Screen name="Deals" component={DealsScreen} options={{
+      <Tab.Screen name="Deals" component={DealsStack} options={{
         headerStyle: { backgroundColor: 'white' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',

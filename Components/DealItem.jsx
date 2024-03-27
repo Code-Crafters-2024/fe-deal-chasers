@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native';
 import { styles } from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const DealItem = ({ item, categories, onShare }) => {
+const DealItem = ({ item, categories, onShare, onPress }) => {
   const category = categories.find(cat => cat.category_id === item.category_id);
   const formattedDate = new Date(item.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -14,7 +14,7 @@ const DealItem = ({ item, categories, onShare }) => {
   return (
     <TouchableOpacity
       style={styles.dealsCard}
-      onPress={() => console.log("Navigating to single deal page:", item)}>
+      onPress={() => onPress(item)}>
       <Image source={{ uri: item.image_url }} style={styles.dealsImage} />
       <View style={styles.dealsInfo}>
         <Text style={styles.dealsTitle}>{item.title}</Text>
@@ -36,5 +36,6 @@ const DealItem = ({ item, categories, onShare }) => {
     </TouchableOpacity>
   );
 };
+
 
 export default DealItem;

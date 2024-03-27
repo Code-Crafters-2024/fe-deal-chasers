@@ -16,6 +16,7 @@ const Deals = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    fetchCategories();
     fetchDeals();
   }, [selectedCategory, sortBy, searchQuery]);
 
@@ -100,6 +101,7 @@ const Deals = () => {
 
   const handleDealsPress = (deal) => {
     navigation.navigate("SingleDeal", { deal });
+  };
 
   return (
     <View style={styles.dealsContainer}>
@@ -138,7 +140,7 @@ const Deals = () => {
       <FlatList
         data={deals}
         renderItem={({ item }) => (
-          <DealItem item={item} categories={categories} onShare={onShare} />
+          <DealItem item={item} categories={categories} onShare={onShare} onPress={handleDealsPress}  />
         )}
         keyExtractor={(item) => item.deal_id.toString()}
         horizontal={false}
@@ -148,4 +150,5 @@ const Deals = () => {
     </View>
   );
 };
+
 export default Deals;
