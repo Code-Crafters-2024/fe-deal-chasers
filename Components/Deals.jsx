@@ -10,19 +10,18 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "../styles";
+import { useNavigation } from "@react-navigation/native";
 import { supabase } from '../lib/supabase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Deals = () => {
+  const navigation = useNavigation();
   const [deals, setDeals] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortBy, setSortBy] = useState("");
 
-  useEffect(() => {
-    fetchCategories();
-    fetchDeals();
-  }, []);
+ 
 
   useEffect(() => {
     fetchDeals();
@@ -108,7 +107,6 @@ const Deals = () => {
       console.log(error.message);
     }
   };
-
   const renderItem = ({ item }) => {
     const category = categories.find(cat => cat.category_id === item.category_id);
 
@@ -117,7 +115,6 @@ const Deals = () => {
       month: 'short',
       day: 'numeric',
     });
-
     return (
       <TouchableOpacity
         style={styles.dealsCard}
@@ -133,11 +130,11 @@ const Deals = () => {
         </View>
         <View style={styles.shareContainer}>
           <Pressable onPress={onShare}>
-            <Pressable onPress={onShare}>
               <Icon name="share" size={24} color="#FF6347" />
-            </Pressable>
           </Pressable>
         </View>
+            
+            
         <TouchableOpacity
           style={styles.getDealButton}
           onPress={() => handleGetDeal(item.link)}
@@ -150,9 +147,8 @@ const Deals = () => {
 
 
   const handleDealsPress = (deal) => {
-    console.log("Navigating to single deal page:", deal);
+    navigation.navigate("SingleDeal", { deal });
   };
-
   return (
     <View style={styles.dealsContainer}>
       <View style={styles.dropdownContainer}>
@@ -195,5 +191,4 @@ const Deals = () => {
     </View>
   );
 };
-
 export default Deals;
