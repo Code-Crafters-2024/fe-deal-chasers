@@ -45,7 +45,7 @@ const Deals = () => {
         if (sortBy === 'price') {
           return a.price - b.price;
         } else if (sortBy === 'date') {
-          return new Date(a.created_at) - new Date(b.created_at);
+          return new Date(b.created_at) - new Date(a.created_at);
         } else if (sortBy === 'votes') {
           return b.votes - a.votes;
         }

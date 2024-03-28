@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, Button } from "react-native";
 import { styles } from "../styles";
-import { supabase } from '../lib/supabase';
 
 
 
@@ -10,7 +9,7 @@ const CommentsForm = ({ onCommentSubmit }) => {
   const [comment, setComment] = useState("");
   const handleCommentSubmit = () => {
     onCommentSubmit(comment);
-    setComment(""); // Clear the comment input field after submission
+    setComment("");
   };
   return (
     <View style={styles.commentCard}>
@@ -20,7 +19,13 @@ const CommentsForm = ({ onCommentSubmit }) => {
         value={comment}
         onChangeText={setComment}
       />
-      <Button title="Submit" onPress={handleCommentSubmit} />
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Submit"
+          onPress={handleCommentSubmit}
+          color="#FF6347"
+        />
+      </View>
     </View>
   );
 };

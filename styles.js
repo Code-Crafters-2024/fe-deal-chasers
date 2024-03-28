@@ -58,7 +58,6 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-
   /* CATEGORY CARD CSS */
 
   CategoryContainer: {
@@ -126,8 +125,17 @@ export const styles = StyleSheet.create({
   dealsList: {
     flexGrow: 1,
   },
+  commentsList: {
+    flexGrow: 1,
+  },
 
   /* DEALS CARD CSS */
+
+  singleDealContainer: {
+    flexGrow: 1, 
+    justifyContent: "center", 
+  },
+
   dealsContainer: {
     justifyContent: "center",
     paddingHorizontal: 10,
@@ -147,7 +155,13 @@ export const styles = StyleSheet.create({
     elevation: 5,
     width: "100%",
     minHeight: 120,
-    
+
+  },
+
+  dealShareContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
   dealsImage: {
     width: 90,
@@ -181,6 +195,8 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+
+
   resetButton: {
     backgroundColor: "#FF6347",
     padding: 5,
@@ -199,14 +215,13 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#FF6347', 
+    borderColor: '#FF6347',
   },
+
+  /* SINGLE DEALS CSS */
   singleDealsCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 10,
+    flexDirection: "column",
+    backgroundColor: "#ffffff",
     marginBottom: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -214,13 +229,44 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: "100%",
-    height: 150,
+
   },
+  singleDealsImageContainer: {
+    width: "100%",
+    height: 250,
+  },
+  SingleDealsImage: {
+    flex: 1,
+  },
+  singleDealsTextInfo: {
+    padding: 10,
+    marginBottom: 20,
+  },
+  singleDealPosted: {
+    fontSize: 12,
+  },
+  singleDealVote: {
+    fontSize: 12,
+  },
+  singleDealTitle: {
+    marginTop: 5,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  singleDealCat: {
+    fontSize: 12,
+  },
+  singleDealBody: {
+    fontSize: 12,
+  },
+
+
+  /* SINGLE DEALS COMMENTS CSS */
+
   singleDealsCommentsCard: {
+    position: 'relative',
     flexDirection: "row",
-    alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 10,
     padding: 10,
     marginBottom: 10,
     shadowColor: "#000",
@@ -229,29 +275,20 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: "100%",
-    height: 230,
-  },
-  singleDealContainer: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 230,
-    marginTop: 80,
   },
   singleDealsInfo: {
     flex: 1,
-    flexDirection: "column",
   },
   singleDealsText: {
     fontSize: 12,
-    marginBottom: 3,
   },
   singleDealsTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 0,
-    flex: 0.5,
-    alignItems: "stretch",
   },
+
+  /* COMMENTS CSS */
   commentsList: {
     alignItems: "center",
   },
@@ -265,11 +302,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  commentsFormTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   commentsFormInput: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -277,29 +309,54 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     width: '70%',
   },
+  buttonContainer: {
+    paddingVertical: 0,
+    paddingHorizontal: 0, 
+  },
   commentCard: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     padding: 10,
     marginBottom: 10,
-    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
   },
   commentInput: {
     flex: 1,
-    height: 40,
+    height: 35,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
     paddingHorizontal: 10,
     marginRight: 10,
   },
+
+
+
+  /* SEARCH */
   searchContainer: {
     backgroundColor: "white",
     padding: 5,
     marginVertical: 10,
+  },
+
+
+  /* VOTE BUTTONS */
+  voteButtons: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: "#FF6347",
+    
+  },
+  singleDealVote: {
+    marginLeft: 10,
+    marginRight: 10,
+    color: "white",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });
 
