@@ -9,7 +9,15 @@ const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 
 
-export default function DealsListCard({ item, index }) {
+export default function DealsListCard({ item, index, categories }) {
+  let itemCategory = ''
+
+  for(let i=0; i<categories.length; i++){
+    if(categories[i].category_id === item.category_id){
+      itemCategory = categories[i].name
+    }
+  }
+
   function onShare() {
     console.log("share button pressed");
   }
@@ -31,7 +39,7 @@ export default function DealsListCard({ item, index }) {
       />
       <View style={extraStyles.textContent}>
         <Text style={styles.dealsTitle}>{item.title}</Text>
-        <Text style={styles.dealsText}>Category: {"N/A"}</Text>
+        <Text style={styles.dealsText}>Category: {itemCategory}</Text>
         <Text style={styles.dealsText}>
           Added: {formatDate(item.created_at)}
         </Text>
