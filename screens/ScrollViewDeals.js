@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
   ScrollView,
   Animated,
@@ -10,22 +9,23 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  Pressable,
 } from "react-native";
+import DealsListCard from "../Components/DealsListCard";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
-const ScrollViewDeals = ({ deals, region, children, setRegion }) => {
-  const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
+const ScrollViewDeals = ({ deals, region, children, mapRef, setSelectedMarker, _scrollView }) => {
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
-  function handleScroll(value) {
-    let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+
+
+    useEffect(() => {
+      mapAnimation.addListener(({ value }) => {
+        let index = Math.floor(value / CARD_WIDTH + 0.3);
     if (index >= deals.length) {
       index = deals.length - 1;
     }
@@ -37,83 +37,19 @@ const ScrollViewDeals = ({ deals, region, children, setRegion }) => {
       if (mapIndex !== index) {
         mapIndex = index;
         const { location } = deals[index];
-        setRegion({
+        setSelectedMarker(index)
+        mapRef.current.animateToRegion({
           latitude: location[0],
           longitude: location[1],
           latitudeDelta: region.latitudeDelta,
           longitudeDelta: 0,
-        });
+        }, 350);
       }
     }, 10);
-  }
-  //   useEffect(() => {
-  //     mapAnimation.addListener(({ value }) => {
-  //       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-  //       if (index >= deals.length) {
-  //         index = deals.length - 1;
-  //       }
-  //       if (index <= 0) {
-  //         index = 0;
-  //       }
-  //       clearTimeout(regionTimeout);
-  //       const regionTimeout = setTimeout(() => {
-  //         if (mapIndex !== index) {
-  //           mapIndex = index;
-  //           const { location } = deals[index];
-  //           console.log(location);
-  //           _map.current.animateToRegion(
-  //             {
-  //               latitude: location[0],
-  //               longitude: location[1],
-  //               latitudeDelta: region.latitudeDelta,
-  //               longitudeDelta: region.longitudeDelta,
-  //             },
-  //             350
-  //           );
-  //         }
-  //       }, 10);
-  //     });
-  //     return () => mapAnimation.removeAllListeners();
-  //   });
-  /////////////
-  // {state.markers.map((marker, index) => {
-  //     const scaleStyle = {
-  //       transform: [
-  //         {
-  //           scale: interpolations[index].scale,
-  //         },
-  //       ],
-  //     };
-  //   const interpolations = deals.map((marker, index) => {
-  //     const inputRange = [
-  //       (index - 1) * CARD_WIDTH,
-  //       index * CARD_WIDTH,
-  //       (index + 1) * CARD_WIDTH,
-  //     ];
-  //     const scale = mapAnimation.interpolate({
-  //       inputRange,
-  //       outputRange: [1, 1.5, 1],
-  //       extrapolate: "clamp",
-  //     });
-  //     return { scale };
-  //   });
-  //   onPress={(e) => onMarkerPress(e)}
-  //   const onMarkerPress = (mapEventData) => {
-  //     const markerID = mapEventData._targetInst.return.key;
-  //     let x = markerID * CARD_WIDTH + markerID * 20;
-  //     if (Platform.OS === "ios") {
-  //       x = x - SPACING_FOR_CARD_INSET;
-  //     }
-  //     _scrollView.current.scrollTo({ x: x, y: 0, animated: true });
-  //   };
-
-  function formatDate(created_at) {
-    return new Date(created_at).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+      });
+      return () => mapAnimation.removeAllListeners();
     });
-  }
+
   return (
     <View style={styles.container}>
       {children}
@@ -124,7 +60,6 @@ const ScrollViewDeals = ({ deals, region, children, setRegion }) => {
         height={50}
         style={styles.chipsScrollView}
         contentInset={{
-          // iOS only
           top: 0,
           left: 0,
           bottom: 0,
@@ -160,78 +95,21 @@ const ScrollViewDeals = ({ deals, region, children, setRegion }) => {
           paddingHorizontal:
             Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
         }}
-        onScroll={(e) => handleScroll(e.nativeEvent.contentOffset.x)}
-        // {Animated.event(
-        //   [
-        //     {
-        //       nativeEvent: {
-        //         contentOffset: {
-        //           x: mapAnimation,
-        //         },
-        //       },
-        //     },
-        //   ],
-        //   { useNativeDriver: true }
-        // )}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: mapAnimation,
+                },
+              },
+            },
+          ],
+          { useNativeDriver: true }
+        )}
       >
         {deals.map((item, index) => (
-          <View style={styles.card} key={index}>
-            <Image
-              source={{ uri: item.image_url }}
-              // style={styles.dealsImage} original deal card style
-              style={styles.cardImage}
-              resizeMode="cover"
-            />
-            <View style={styles.textContent}>
-              {/* <View style={styles.dealsInfo}> */}
-              <Text style={styles.dealsTitle}>{item.title}</Text>
-              <Text style={styles.dealsText}>Category: {"N/A"}</Text>
-              <Text style={styles.dealsText}>
-                Added: {formatDate(item.created_at)}
-              </Text>
-              <Text style={styles.dealsText}>Votes: {item.votes}</Text>
-              <Text style={[styles.dealsText, styles.priceText]}>
-                Price: £{item.price}
-              </Text>
-              {/* </View> */}
-              {/* <View style={styles.shareContainer}>
-                <Pressable onPress={onShare}>
-                  <Icon name="share" size={24} color="#FF6347" />
-                </Pressable>
-              </View> */}
-              {/*  */}
-              <TouchableOpacity
-                style={styles.getDealButton}
-                onPress={() => handleGetDeal(item.link)}
-              >
-                <Text style={styles.getDealText}>Get Deal</Text>
-              </TouchableOpacity>
-              {/*  */}
-              <View style={styles.button}>
-                <TouchableOpacity
-                  onPress={() => {}}
-                  style={[
-                    styles.signIn,
-                    {
-                      borderColor: "#FF6347",
-                      borderWidth: 1,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: "#FF6347",
-                      },
-                    ]}
-                  >
-                    Order Now
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          <DealsListCard item={item} index={index} key={item.deal_id}/>
         ))}
       </Animated.ScrollView>
     </View>
@@ -292,7 +170,6 @@ const styles = StyleSheet.create({
     paddingRight: width - CARD_WIDTH,
   },
   card: {
-    // padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 5,
@@ -318,7 +195,6 @@ const styles = StyleSheet.create({
   },
   cardtitle: {
     fontSize: 12,
-    // marginTop: 5,
     fontWeight: "bold",
   },
   cardDescription: {
@@ -350,9 +226,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-
-  //
-
   container: {
     width: "95%",
     height: "95%",
@@ -360,8 +233,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    //
-    // paddingHorizontal: 20,
     backgroundColor: "#fff",
   },
   paragraph: {
@@ -372,7 +243,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  //
   title: {
     fontSize: 24,
     fontWeight: "bold",
