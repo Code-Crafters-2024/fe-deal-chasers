@@ -5,7 +5,6 @@ import {
   View,
   ScrollView,
   Animated,
-  Image,
   TouchableOpacity,
   Dimensions,
   Platform,
@@ -13,7 +12,7 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import DealsListCard from "../Components/DealsListCard";
-import { getDeals } from "../utils/supabase";
+import { getCategories, getDeals } from "../utils/supabase";
 
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
@@ -26,6 +25,9 @@ export default function ScrollViewDeals() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [deals, setDeals] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const scrollRef = React.useRef();
   const mapRef = React.useRef();
@@ -43,15 +45,33 @@ export default function ScrollViewDeals() {
       })
       .then((location) => {
         setLocation(location);
-        return getDeals();
-      })
-      .then((dealsData) => {
-        setDeals(dealsData);
       })
       .catch((err) => {
         setErrorMsg(err);
       });
   }, []);
+
+  useEffect(() => {
+    const promises = [getDeals(selectedCategory), getCategories()];
+    Promise.all(promises).then((data) => {
+      const dealsData = data[0];
+      const categoriesData = data[1];
+      const properDeals = dealsData.filter((deal) => {
+        const id = deal.deal_id;
+        return id <= 30;
+      });
+      
+      setDeals(properDeals);
+
+      if(selectedCategory){
+        setCategories(categoriesData.filter((category)=>{
+          return category.category_id === selectedCategory
+        }))
+      } else {
+        setCategories(categoriesData);
+      }
+    });
+  }, [selectedCategory]);
 
   useEffect(() => {
     if (location) {
@@ -65,7 +85,7 @@ export default function ScrollViewDeals() {
   }, [location]);
 
   useEffect(() => {
-    mapAnimation.addListener(({ value }) => {
+    mapAnimation.addListener(({value}) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3);
       if (index >= deals.length) {
         index = deals.length - 1;
@@ -78,7 +98,7 @@ export default function ScrollViewDeals() {
         if (mapIndex !== index) {
           mapIndex = index;
           const { location } = deals[index];
-          setSelectedMarker(index);
+          setSelectedMarker(deals[index].deal_id);
           mapRef.current.animateToRegion(
             {
               latitude: location[0],
@@ -92,45 +112,29 @@ export default function ScrollViewDeals() {
       }, 10);
     });
     return () => mapAnimation.removeAllListeners();
-  }, []);
-
-  const interpolations = deals.map((deal, index) => {
-    const inputRange = [
-      (index - 1) * CARD_WIDTH,
-      index * CARD_WIDTH,
-      (index + 1) * CARD_WIDTH,
-    ];
-    const scale = mapAnimation.interpolate({
-      inputRange,
-      outputRange: [1, 1.5, 1],
-      extrapolate: "clamp",
-    });
-    return { scale };
   });
 
   const onMarkerPress = (mapEventData) => {
-    const markerID = mapEventData._targetInst.return.key - 1;
+    const dealID = mapEventData._targetInst.return.key;
+    const markerID = mapEventData._targetInst.return.index;
     let x = markerID * CARD_WIDTH + markerID * 20;
     if (Platform.OS === "ios") {
       x = x - SPACING_FOR_CARD_INSET;
     }
-    const { location } = deals[markerID];
-    mapRef.current.animateToRegion(
-      {
-        latitude: location[0],
-        longitude: location[1],
-        latitudeDelta: region.latitudeDelta,
-        longitudeDelta: 0,
-      },
-      350
-    );
-
-    setSelectedMarker(markerID);
+    setSelectedMarker(+dealID);
 
     scrollRef.current.scrollTo({ x: x, y: 0, animated: true });
   };
 
-  return (
+  function handleCategorySelection(category_id) {
+    if(selectedCategory === category_id){
+      setSelectedCategory(null)
+    } else {
+      setSelectedCategory(category_id)
+    }
+  }
+
+  return region ? (
     <View style={styles.container}>
       <MapView
         ref={mapRef}
@@ -143,16 +147,9 @@ export default function ScrollViewDeals() {
       >
         {deals.map((deal, index) => {
           const imageSource =
-            selectedMarker === index
+            selectedMarker === deal.deal_id
               ? require("../assets/map-marker-2.png")
               : require("../assets/map-marker-1.png");
-          const scaleStyle = {
-            transform: [
-              {
-                scale: interpolations[index].scale,
-              },
-            ],
-          };
           return (
             <Marker
               key={deal.deal_id}
@@ -161,11 +158,12 @@ export default function ScrollViewDeals() {
                 longitude: deal.location[1],
               }}
               onPress={(e) => onMarkerPress(e)}
+              title={deal.title}
             >
-              <Animated.View style={[styles.markerWrap]}>
+              <Animated.View style={styles.markerWrap}>
                 <Animated.Image
                   source={imageSource}
-                  style={[styles.marker, scaleStyle]}
+                  style={styles.marker}
                   resizeMode="cover"
                 />
               </Animated.View>
@@ -189,11 +187,19 @@ export default function ScrollViewDeals() {
           paddingRight: Platform.OS === "android" ? 20 : 0,
         }}
       >
-        {deals.map((deal) => (
-          <TouchableOpacity key={deal.deal_id} style={styles.chipsItem}>
-            <Text>{deal.title}</Text>
+        {categories.map((category) => {
+        const selectedStyle = category.category_id === selectedCategory ? {backgroundColor: 'black'} : {}
+        const textStyle = category.category_id === selectedCategory ? {color: 'white'} : {}
+        
+        return (
+          <TouchableOpacity
+            key={category.category_id}
+            style={[styles.chipsItem, selectedStyle]}
+            onPress={()=>handleCategorySelection(category.category_id)}
+          >
+            <Text style={textStyle}>{category.name}</Text>
           </TouchableOpacity>
-        ))}
+        )})}
       </ScrollView>
       <Animated.ScrollView
         ref={scrollRef}
@@ -228,11 +234,13 @@ export default function ScrollViewDeals() {
         )}
       >
         {deals.map((item, index) => (
-          <DealsListCard item={item} index={index} key={item.deal_id} />
+          <DealsListCard item={item} index={index} key={item.deal_id} categories={categories} />
         ))}
       </Animated.ScrollView>
     </View>
-  );
+  ) : (
+    <Text>Loading...</Text>
+  )
 }
 
 const styles = StyleSheet.create({
