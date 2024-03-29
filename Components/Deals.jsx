@@ -99,11 +99,18 @@ const Deals = () => {
     }
   };
 
+  const handleAddDeal = () => {
+    navigation.navigate("PostDealScreen");
+  };
+  
   const handleDealsPress = (deal) => {
     navigation.navigate("SingleDeal", { deal });
   };
 
-  return (
+  return (<View>
+    <TouchableOpacity onPress={handleAddDeal} style={styles.resetButton}>
+          <Text style={styles.resetButtonText}>add a deal</Text>
+        </TouchableOpacity>
     <View style={styles.dealsContainer}>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearch={handleSearch} />
 
@@ -118,7 +125,7 @@ const Deals = () => {
             {categories.map(category => (
               <Picker.Item key={category.category_id} label={category.name} value={category.category_id} />
             ))}
-          </Picker>
+          </Picker> 
         </View>
         <View style={[styles.dropdown, styles.sortByDropdown]}>
           <Picker
@@ -147,7 +154,7 @@ const Deals = () => {
         numColumns={1}
         contentContainerStyle={styles.dealsList}
       />
-    </View>
+    </View></View>
   );
 };
 
