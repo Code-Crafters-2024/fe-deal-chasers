@@ -140,6 +140,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10,
     marginTop: 10,
+    marginBottom: 190,
   },
   dealsCard: {
     position: 'relative',

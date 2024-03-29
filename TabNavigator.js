@@ -27,7 +27,7 @@ const DealsStack = () => {
       <Stack.Screen 
         name="PostDealScreen" 
         component={PostDealScreen}
-        options={{ headerShown: false }} 
+        options={{ title: "Post Deal" }} 
       />
     </Stack.Navigator>
   );
