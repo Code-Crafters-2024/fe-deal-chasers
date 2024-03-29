@@ -8,7 +8,7 @@ import DealsScreen from './screens/DealsScreen';
 import LoginScreen from './screens/LoginScreen';
 import SingleDeal from './Components/SingleDeal';
 import MapScreen from './screens/MapScreen';
-
+import PostDealScreen from './screens/PostDealScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const DealsStack = () => {
@@ -16,6 +16,7 @@ const DealsStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="All Deals" component={DealsScreen} />
       <Stack.Screen name="SingleDeal" component={SingleDeal} />
+      <Stack.Screen name="PostDealScreen" component={PostDealScreen} />
     </Stack.Navigator>
   );
 };
@@ -36,7 +37,6 @@ const TabNavigator = () => {
           } else if (route.name === 'Map') {
             iconName = 'map-search';
           }
-
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
         },
         tabBarStyle: { backgroundColor: '#333333' },
