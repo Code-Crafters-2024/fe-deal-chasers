@@ -14,9 +14,21 @@ const Stack = createStackNavigator();
 const DealsStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="All Deals" component={DealsScreen} />
-      <Stack.Screen name="SingleDeal" component={SingleDeal} />
-      <Stack.Screen name="PostDealScreen" component={PostDealScreen} />
+      <Stack.Screen
+        name="All Deals"
+        component={DealsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SingleDeal"
+        component={SingleDeal}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="PostDealScreen" 
+        component={PostDealScreen}
+        options={{ headerShown: false }} 
+      />
     </Stack.Navigator>
   );
 };
@@ -44,6 +56,7 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{
+        headerShown: false,
         headerStyle: { backgroundColor: 'white' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
@@ -62,6 +75,7 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{
+        headerShown: false,
         headerStyle: { backgroundColor: 'white' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
@@ -71,6 +85,7 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Map" component={MapScreen} options={{
+        headerShown: false,
         headerStyle: { backgroundColor: 'white' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
@@ -80,6 +95,7 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Login" component={LoginScreen} options={{
+        headerShown: false,
         headerStyle: { backgroundColor: 'white' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
