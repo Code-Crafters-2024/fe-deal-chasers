@@ -78,27 +78,6 @@ const Deals = () => {
     fetchDeals();
   };
 
-  // const url =
-  //   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; //placeholder sharing url
-  // const onShare = async () => {
-  //   try {
-  //     const result = await Share.share({
-  //       message: "Deal Chasers: " + "\n" + url,
-  //     });
-  //     if (result.action === Share.sharedAction) {
-  //       if (result.activityType) {
-  //         console.log("shared with activity type of: ", result.activityType);
-  //       } else {
-  //         console.log("shared");
-  //       }
-  //     } else if (result.action === Share.dismissedAction) {
-  //       console.log("dismissed");
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-
   const handleAddDeal = () => {
     navigation.navigate("PostDealScreen");
   };
@@ -147,7 +126,7 @@ const Deals = () => {
       <FlatList
         data={deals}
         renderItem={({ item }) => (
-          <DealItem item={item} categories={categories} onShare={onShare} onPress={handleDealsPress} />
+          <DealItem item={item} categories={categories} onPress={handleDealsPress} />
         )}
         keyExtractor={(item) => item.deal_id.toString()}
         horizontal={false}

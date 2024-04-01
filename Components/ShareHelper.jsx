@@ -1,20 +1,21 @@
 import { Share } from 'react-native';
 
-const url = "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; //placeholder sharing url
-
-const onShare = async () => {
+const onShare = async (deal) => {
   try {
+    const message = `Deal Chasers: \nTitle: ${deal.title}\nPrice: £${deal.price}\nLink: ${deal.link}`;
+
     const result = await Share.share({
-      message: "Deal Chasers: " + "\n" + url,
+      message: message,
     });
+
     if (result.action === Share.sharedAction) {
       if (result.activityType) {
-        console.log("shared with activity type of: ", result.activityType);
+        console.log("Shared with activity type of:", result.activityType);
       } else {
-        console.log("shared");
+        console.log("Shared");
       }
     } else if (result.action === Share.dismissedAction) {
-      console.log("dismissed");
+      console.log("Dismissed");
     }
   } catch (error) {
     console.log(error.message);
