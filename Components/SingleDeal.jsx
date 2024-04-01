@@ -65,27 +65,32 @@ const SingleDeal = ({ route, onShare }) => {
     }
   };
 
-  const handleCommentSubmit = async (comment) => {
+  const handleCommentSubmit = async (comment, authorId = 2) => {
     try {
-      if (!deal || !deal.deal_id) {
-        throw new Error("Deal ID is missing or invalid.");
-      }
+        if (!deal || !deal.deal_id) {
+            throw new Error("Deal ID is missing or invalid.");
+        }
 
-      const { data, error } = await supabase
-        .from("deal_comments")
-        .insert([{ body: comment, deal_id: deal.deal_id }]);
+        const { data, error } = await supabase
+            .from("deal_comments")
+            .insert([{
+                body: comment,
+                author: authorId,
+                deal_id: deal.deal_id
+            }]);
 
-      if (error) {
-        throw new Error("Error posting comment: " + error.message);
-      }
+        if (error) {
+            throw new Error("Error posting comment: " + error.message);
+        }
 
-      console.log("Comment posted successfully:", comment);
-      setComments([...comments, { body: comment, deal_id: deal.deal_id }]);
-      fetchComments();
+        console.log("Comment posted successfully:", comment);
+        setComments([...comments, { body: comment, author: authorId, deal_id: deal.deal_id }]);
+        fetchComments();
     } catch (error) {
-      setError(error.message);
+        setError(error.message);
     }
-  };
+};
+
 
   const handleVote = async (voteType) => {
     try {
