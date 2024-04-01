@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { styles } from "../styles";
 import { supabase } from "../lib/supabase";
 
 const SingleDealComments = ({ deal }) => {
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchComments();
   }, []);
 
   const fetchComments = async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from("deal_comments")
@@ -23,6 +25,8 @@ const SingleDealComments = ({ deal }) => {
       setComments(data);
     } catch (error) {
       console.error("Error fetching comments:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,20 +68,26 @@ const SingleDealComments = ({ deal }) => {
       console.error("Error fetching author names:", error.message);
     }
   };
-  
-  
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <View style={styles.commentsList}>
-      {comments.map((comment) => (
-        <TouchableOpacity key={comment.deal_comment_id} style={styles.singleDealsCommentsCard}>
-          <View style={styles.singleDealsInfo}>
-            <Text style={styles.singleDealsTitle}>{comment.author} commented</Text>
-            <Text style={styles.singleDealsText}>{comment.created_at}</Text>
-            <Text style={styles.singleDealsText}>{comment.body}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+      {comments.length === 0 ? (
+        <Text>No comments yet</Text>
+      ) : (
+        comments.map((comment) => (
+          <TouchableOpacity key={comment.deal_comment_id} style={styles.singleDealsCommentsCard}>
+            <View style={styles.singleDealsInfo}>
+              <Text style={styles.singleDealsTitle}>{comment.author} commented</Text>
+              <Text style={styles.singleDealsText}>{comment.created_at}</Text>
+              <Text style={styles.singleDealsText}>{comment.body}</Text>
+            </View>
+          </TouchableOpacity>
+        ))
+      )}
     </View>
   );
 };
