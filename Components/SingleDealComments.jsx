@@ -34,7 +34,7 @@ const SingleDealComments = ({ deal }) => {
     try {
       const authorIds = comments
         .map(comment => comment.author)
-        .filter(authorId => authorId !== undefined);
+        .filter(authorId => typeof authorId === 'number');
   
       if (authorIds.length === 0) {
         return;
@@ -64,6 +64,8 @@ const SingleDealComments = ({ deal }) => {
       console.error("Error fetching author names:", error.message);
     }
   };
+  
+  
 
   return (
     <View style={styles.commentsList}>
