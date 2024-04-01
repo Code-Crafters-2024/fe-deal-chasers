@@ -8,7 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SingleDeal = ({ route, onShare }) => {
+const SingleDeal = ({ route, onShare }) => { 
   const { deal } = route.params;
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -139,15 +139,15 @@ const SingleDeal = ({ route, onShare }) => {
             <FontAwesome name="thumbs-down" size={24} color="white" onPress={() => handleVote('down')} />
             <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
             <FontAwesome name="thumbs-up" size={24} color="white" onPress={() => handleVote('up')} />
-          </View>
-          <View style={styles.singleDealsTextInfo}>
             <View style={styles.dealShareContainer}>
 
-            <Pressable onPress={onShare}>
-          <Icon name="share" size={24} color="#FF6347" />
-        </Pressable>
+              <Pressable onPress={onShare}>
+                <Icon name="share" size={24} color="white" />
+              </Pressable>
 
             </View>
+          </View>
+          <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
             <Text style={styles.singleDealPosted}>Posted {formattedTime} on {formattedDate}</Text>
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>

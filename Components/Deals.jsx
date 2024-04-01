@@ -83,7 +83,7 @@ const Deals = () => {
   };
 
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDeal", { deal });
+    navigation.navigate("SingleDeal", { deal, onShare });
   };
 
   return (<View>
