@@ -2,14 +2,19 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native';
 import { styles } from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import onShare from './ShareHelper';
 
-const DealItem = ({ item, categories, onShare, onPress }) => {
+const DealItem = ({ item, categories, onPress }) => {
   const category = categories.find(cat => cat.category_id === item.category_id);
   const formattedDate = new Date(item.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   });
+
+  const handleSharePress = () => {
+    onShare(item);
+  };
 
   return (
     <TouchableOpacity
@@ -24,7 +29,7 @@ const DealItem = ({ item, categories, onShare, onPress }) => {
         <Text style={[styles.dealsText, styles.priceText]}>Price: £{item.price}</Text>
       </View>
       <View style={styles.shareContainer}>
-        <Pressable onPress={onShare}>
+        <Pressable onPress={handleSharePress}>
           <Icon name="share" size={24} color="#FF6347" />
         </Pressable>
       </View>
