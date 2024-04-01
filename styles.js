@@ -161,7 +161,6 @@ export const styles = StyleSheet.create({
 
   dealShareContainer: {
     position: 'absolute',
-    top: 10,
     right: 10,
   },
   dealsImage: {
