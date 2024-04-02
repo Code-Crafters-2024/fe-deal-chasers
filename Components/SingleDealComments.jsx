@@ -8,80 +8,64 @@ const SingleDealComments = ({ deal }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchComments();
+    getComments();
   }, []);
 
-  const fetchComments = async () => {
-    setLoading(true);
+  async function getComments() {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      const initialComments = await supabase
         .from("deal_comments")
         .select("*")
         .eq("deal_id", deal)
         .order("created_at", { ascending: false });
-      if (error) {
-        throw error;
-      }
-      setComments(data);
-    } catch (error) {
-      console.error("Error fetching comments:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAuthorNames();
-  }, [comments]);
-
-  const fetchAuthorNames = async () => {
-    try {
-      const authorIds = comments
-        .map(comment => comment.author)
-        .filter(authorId => typeof authorId === 'number');
+      const authorIds = initialComments.data.map((comment) => {
+        return comment.author;
+      });
       if (authorIds.length === 0) {
         return;
       }
-  
-      const { data, error } = await supabase
+      const supabaseUsers = await supabase
         .from("users")
         .select("username, user_id")
         .in("user_id", authorIds);
-  
-      if (error) {
-        throw error;
-      }
-  
       const authorMap = {};
-      data.forEach(author => {
-        
+      supabaseUsers.data.forEach((author) => {
         authorMap[author.user_id] = author.username;
       });
-  
-      const updatedComments = comments.map(comment => ({
-        ...comment,
-        author: authorMap[comment.author]
-      }));
-  
+      const updatedComments = initialComments.data.map((comment) => {
+        return {
+          ...comment,
+          author: authorMap[comment.author],
+        };
+      });
       setComments(updatedComments);
+      if (initialComments.error || supabaseUsers.error) {
+        throw error;
+      }
     } catch (error) {
-      console.error("Error fetching author names:", error.message);
+      console.log(err, "error");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  if (loading) {
-    return <ActivityIndicator />;
   }
 
-  return (
+  return loading ? (
+    <ActivityIndicator />
+  ) : (
     <View style={styles.commentsList}>
       {comments.length === 0 ? (
         <Text>No comments yet</Text>
       ) : (
         comments.map((comment) => (
-          <TouchableOpacity key={comment.deal_comment_id} style={styles.singleDealsCommentsCard}>
+          <TouchableOpacity
+            key={comment.deal_comment_id}
+            style={styles.singleDealsCommentsCard}
+          >
             <View style={styles.singleDealsInfo}>
-              <Text style={styles.singleDealsTitle}>{comment.author} commented</Text>
+              <Text style={styles.singleDealsTitle}>
+                {comment.author} commented
+              </Text>
               <Text style={styles.singleDealsText}>{comment.created_at}</Text>
               <Text style={styles.singleDealsText}>{comment.body}</Text>
             </View>
