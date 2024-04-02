@@ -5,7 +5,7 @@ import SingleDeal from "../Components/SingleDeal";
 
 const SingleDealScreen = ({ route }) => {
   return (
-    <View style={styles.container}>
+    <View>
       <SingleDeal route={route}></SingleDeal>
     </View>
   );
