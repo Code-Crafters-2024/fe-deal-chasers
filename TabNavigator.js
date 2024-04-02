@@ -10,6 +10,9 @@ import SingleDeal from './Components/SingleDeal';
 import MapScreen from './screens/MapScreen';
 import PostDealScreen from './screens/PostDealScreen';
 import SingleDealScreen from './screens/SingleDealScreen';
+import CustomHeader from './Components/CustomHeader';
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const DealsStack = () => {
@@ -21,7 +24,7 @@ const DealsStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SingleDealScreen"
+        name="SingleDeal"
         component={SingleDealScreen}
         options={{
           headerShown: false,
@@ -54,6 +57,7 @@ const DealsStack = () => {
     </Stack.Navigator>
   );
 };
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -81,8 +85,9 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{
-        headerShown: false,
-        headerStyle: { backgroundColor: 'white' },
+        header: () => <CustomHeader />,
+        // headerShown: false,
+        headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
         headerTitleStyle: {
