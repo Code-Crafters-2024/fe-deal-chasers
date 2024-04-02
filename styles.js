@@ -177,7 +177,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   dealsTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 2,
   },
@@ -460,4 +460,3 @@ export const styles = StyleSheet.create({
   }
 
 });
-
