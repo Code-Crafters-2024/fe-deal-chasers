@@ -33,8 +33,10 @@ const PostDeal = () => {
   const [selectedUrlImage, setSelectedUrlImage] = useState(
     "https://plus.unsplash.com/premium_photo-1664201889896-6a42c19e953a?q=80&w=1536&auto=f[…].3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   );
+
   const [imageUrl, setImageUrl] = useState(""); // Add state for image URL
   // const [isModalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     fetchCategories();
   }, [selectedCategoryId]);
@@ -213,6 +215,7 @@ const PostDeal = () => {
           />
         )}
       </View>
+
       {/* <View >
         <Button title="add image url" onPress={toggleModal} />
         <Modal isVisible={isModalVisible}>
@@ -233,4 +236,3 @@ const PostDeal = () => {
   );
 };
 export default PostDeal;
-

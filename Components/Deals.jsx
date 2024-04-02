@@ -79,7 +79,7 @@ const Deals = () => {
   };
 
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDeal", { deal, onShare });
+    navigation.navigate("SingleDealScreen", { deal, onShare });
   };
 
   return (
@@ -115,7 +115,7 @@ const Deals = () => {
           <Text style={styles.resetButtonText}>Reset</Text>
         </TouchableOpacity>
       </View>
-  
+
       <View style={{ flex: 1 }}>
         <FlatList
           data={deals}
