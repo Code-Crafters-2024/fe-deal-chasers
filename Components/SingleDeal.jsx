@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, Pressable, Share, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  Share,
+  ActivityIndicator,
+} from "react-native";
 import { styles } from "../styles";
 import SingleDealComments from "./SingleDealComments";
 import CommentsForm from "./CommentsForm";
 import { supabase } from "../lib/supabase";
 import { ScrollView } from "react-native-gesture-handler";
-import { FontAwesome } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-const SingleDeal = ({ route, onShare }) => { 
+const SingleDeal = ({ route, onShare }) => {
   const { deal } = route.params;
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -65,39 +72,44 @@ const SingleDeal = ({ route, onShare }) => {
     }
   };
 
-  const handleCommentSubmit = async (comment, authorId = 2) => {
+  const handleCommentSubmit = async (comment) => {
     try {
-        if (!deal || !deal.deal_id) {
-            throw new Error("Deal ID is missing or invalid.");
-        }
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!deal || !deal.deal_id) {
+        throw new Error("Deal ID is missing or invalid.");
+      }
 
-        const { data, error } = await supabase
-            .from("deal_comments")
-            .insert([{
-                body: comment,
-                author: authorId,
-                deal_id: deal.deal_id
-            }]);
+      const { data, error } = await supabase.from("deal_comments").insert([
+        {
+          body: comment,
+          author: user.id,
+          deal_id: deal.deal_id,
+        },
+      ]);
 
-        if (error) {
-            throw new Error("Error posting comment: " + error.message);
-        }
+      if (error) {
+        throw new Error("Error posting comment: " + error.message);
+      }
 
-        console.log("Comment posted successfully:", comment);
-        setComments([...comments, { body: comment, author: authorId, deal_id: deal.deal_id }]);
-        fetchComments();
+      console.log("Comment posted successfully:", comment);
+      setComments([
+        ...comments,
+        { body: comment, author: authorId, deal_id: deal.deal_id },
+      ]);
+      fetchComments();
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
     }
-};
-
+  };
 
   const handleVote = async (voteType) => {
     try {
       let voteIncrement = 0;
-      if (voteType === 'up') {
+      if (voteType === "up") {
         voteIncrement = 1;
-      } else if (voteType === 'down') {
+      } else if (voteType === "down") {
         voteIncrement = -1;
       }
 
@@ -112,25 +124,24 @@ const SingleDeal = ({ route, onShare }) => {
 
       console.log("Vote updated successfully:", voteType);
 
-      setDealData(prevDealData => ({
+      setDealData((prevDealData) => ({
         ...prevDealData,
-        votes: prevDealData.votes + voteIncrement
+        votes: prevDealData.votes + voteIncrement,
       }));
-
     } catch (error) {
       setError(error.message);
     }
   };
 
-  const formattedDate = new Date(deal.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+  const formattedDate = new Date(deal.created_at).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
 
-  const formattedTime = new Date(deal.created_at).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
+  const formattedTime = new Date(deal.created_at).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
   });
 
   return (
@@ -138,23 +149,36 @@ const SingleDeal = ({ route, onShare }) => {
       <View style={styles.singleDealContainer}>
         <View style={styles.singleDealsCard}>
           <View style={styles.singleDealsImageContainer}>
-            <Image source={{ uri: deal.image_url }} style={styles.SingleDealsImage} />
+            <Image
+              source={{ uri: deal.image_url }}
+              style={styles.SingleDealsImage}
+            />
           </View>
           <View style={styles.voteButtons}>
-            <FontAwesome name="thumbs-down" size={24} color="white" onPress={() => handleVote('down')} />
+            <FontAwesome
+              name="thumbs-down"
+              size={24}
+              color="white"
+              onPress={() => handleVote("down")}
+            />
             <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-            <FontAwesome name="thumbs-up" size={24} color="white" onPress={() => handleVote('up')} />
+            <FontAwesome
+              name="thumbs-up"
+              size={24}
+              color="white"
+              onPress={() => handleVote("up")}
+            />
             <View style={styles.dealShareContainer}>
-
               <Pressable onPress={onShare}>
                 <Icon name="share" size={24} color="white" />
               </Pressable>
-
             </View>
           </View>
           <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
-            <Text style={styles.singleDealPosted}>Posted {formattedTime} on {formattedDate}</Text>
+            <Text style={styles.singleDealPosted}>
+              Posted {formattedTime} on {formattedDate}
+            </Text>
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>
             <Text style={styles.singleDealCat}>{deal.category}</Text>
             <Text style={styles.singleDealBody}>{deal.body}</Text>
