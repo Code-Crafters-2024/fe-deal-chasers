@@ -29,11 +29,11 @@ export const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 40,
-    backgroundColor: "blue",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: "#FF6347",
+    padding: 5,
+    marginVertical: 5,
   },
   buttonText: {
     color: "white",
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
     fontSize: 10,
   },
   dealsList: {
-    flexGrow: 1,
+
   },
   commentsList: {
     flexGrow: 1,
@@ -132,15 +132,15 @@ export const styles = StyleSheet.create({
   /* DEALS CARD CSS */
 
   singleDealContainer: {
-    flexGrow: 1, 
-    justifyContent: "center", 
+    flexGrow: 1,
+    justifyContent: "center",
   },
 
   dealsContainer: {
+    flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 10,
     marginTop: 10,
-    marginBottom: 190,
   },
   dealsCard: {
     position: 'relative',
@@ -156,7 +156,6 @@ export const styles = StyleSheet.create({
     elevation: 5,
     width: "100%",
     minHeight: 120,
-
   },
 
   dealShareContainer: {
@@ -178,7 +177,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   dealsTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 2,
   },
@@ -311,7 +310,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     paddingVertical: 0,
-    paddingHorizontal: 0, 
+    paddingHorizontal: 0,
   },
   commentCard: {
     flexDirection: "row",
@@ -343,13 +342,13 @@ export const styles = StyleSheet.create({
 
   /* VOTE BUTTONS */
   voteButtons: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: "#FF6347",
-    
+
   },
   singleDealVote: {
     marginLeft: 10,
@@ -358,5 +357,106 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-});
 
+
+  /* POST DEAL FORM CSS */
+  formContainer: {
+    flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    padding: 10,
+  },
+ 
+  datePickerContainer: {
+    marginBottom: 20,
+    // width: '100%',
+  },
+  dateInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    marginBottom: 30,
+    borderRadius: 0,
+  },
+  categoryDropdown: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+
+  },
+  pickerItemLabel: {
+    fontSize: 10,
+  },
+  formLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'left',
+  },
+  dropdownLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'left',
+  },
+
+  /* HOME PAGE CSS */
+  homeDealsContainer: {
+    marginTop: 20,
+    flex: 3,
+    marginHorizontal: "auto",
+    width: "auto",
+    padding: 5,
+  },
+  HomeDealsList: {
+    flexGrow: 1,
+    flexDirection: "row",
+  },
+  todaysDealsCard: {
+    position: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    marginBottom: 40,
+    margin: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 160,
+    minHeight: 200,
+  },
+  mostPopularDealsCard: {
+    position: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    marginBottom: 40,
+    margin: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 160,
+    minHeight: 200,
+  },
+  todaysDealsImage: {
+    width: 160,
+    height:160,
+  },
+  mostPopularDealsImage: {
+    width: 160,
+    height:160,
+  }
+
+});

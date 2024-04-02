@@ -9,6 +9,10 @@ import LoginScreen from './screens/LoginScreen';
 import SingleDeal from './Components/SingleDeal';
 import MapScreen from './screens/MapScreen';
 import PostDealScreen from './screens/PostDealScreen';
+import SingleDealScreen from './screens/SingleDealScreen';
+import CustomHeader from './Components/CustomHeader';
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const DealsStack = () => {
@@ -20,8 +24,23 @@ const DealsStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SingleDeal"
-        component={SingleDeal}
+        name="SingleDealScreen"
+        component={SingleDealScreen}
+        options={{
+          headerShown: false,
+          headerTitle: "Back to Deals",
+          headerStyle: {
+            backgroundColor: '#333333',
+          },
+          headerTintColor: '#FF6347',
+          headerTitleStyle: {
+            fontSize: 16,
+          },
+        }}
+      />
+      <Stack.Screen 
+        name="PostDealScreen" 
+        component={PostDealScreen}
         options={{
           headerTitle: "Back to Deals",
           headerStyle: {
@@ -31,17 +50,12 @@ const DealsStack = () => {
           headerTitleStyle: {
             fontSize: 16,
           },
-          // headerTitleAlign: 'center', 
         }}
-      />
-      <Stack.Screen 
-        name="PostDealScreen" 
-        component={PostDealScreen}
-        options={{ title: "Post Deal" }} 
       />
     </Stack.Navigator>
   );
 };
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -54,7 +68,10 @@ const TabNavigator = () => {
             iconName = 'account';
           } else if (route.name === 'Deals') {
             iconName = 'sale';
-          } else if (route.name === 'Login') {
+          } else if (route.name === 'Add Deal') {
+            iconName = 'plus';
+          }
+          else if (route.name === 'Login') {
             iconName = 'login';
           } else if (route.name === 'Map') {
             iconName = 'map-search';
@@ -66,8 +83,8 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{
-        headerShown: false,
-        headerStyle: { backgroundColor: 'white' },
+        header: () => <CustomHeader />,
+        headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
         headerTitleStyle: {
@@ -76,7 +93,9 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Deals" component={DealsStack} options={{
-        headerStyle: { backgroundColor: 'white' },
+        header: () => <CustomHeader />,
+        headerShown: true,
+        headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
         headerTitleStyle: {
@@ -84,6 +103,17 @@ const TabNavigator = () => {
           fontWeight: 'bold',
         }
       }} />
+      <Tab.Screen name="Add Deal" component={PostDealScreen} options={{
+        header: () => <CustomHeader />,
+        headerShown: true,
+        headerStyle: { backgroundColor: '#333333' },
+        headerTitleAlign: 'center',
+        headerTintColor: '#FF6347',
+        headerTitleStyle: {
+          fontSize: 20,
+          fontWeight: 'bold',
+        }
+      }} /> 
       <Tab.Screen name="Profile" component={ProfileScreen} options={{
         headerShown: false,
         headerStyle: { backgroundColor: 'white' },
