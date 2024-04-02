@@ -75,6 +75,10 @@ const PostDeal = () => {
           image_url: imageUrl,
         },
       ]);
+
+
+
+
       if (error) {
         console.error("Error posting deal:", error.message);
         Alert.alert("Error", "Failed to post deal. Please try again later.");
@@ -120,7 +124,15 @@ const PostDeal = () => {
         allowsEditing: true,
         quality: 1,
       });
-  
+      
+      const avatarFile = selectedGalleryImage
+const { data, error } = await supabase
+  .storage
+  .from('avatars')
+  .upload('public/avatar1.png', avatarFile, {
+    cacheControl: '3600',
+    upsert: false
+  })
       if (!cancelled && assets.length > 0) {
         setSelectedGalleryImage(assets[0].uri);
       } else {
