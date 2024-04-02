@@ -74,7 +74,7 @@ const HomePageDeals = () => {
   return (
     <View style={styles.homeDealsContainer}>
       
-        <Image source={require("../assets/2.png")} style={styles.logo} />
+        {/* <Image source={require("../assets/2.png")} style={styles.logo} /> */}
         <Text style={styles.dealsTitle}>Todays Deals</Text>
         <FlatList
           data={todaysDeals.slice(0, 5)}
