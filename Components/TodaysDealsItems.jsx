@@ -10,6 +10,7 @@ const TodaysDealsItems = ({ item, categories, onShare, onPress }) => {
       style={styles.todaysDealsCard}
       onPress={() => onPress(item)}>
       <Image source={{ uri: item.image_url }} style={styles.todaysDealsImage} />
+      <Text style={styles.dealTitle}>{item.title}</Text> 
       <Text>£{item.price}</Text>
     </TouchableOpacity>
   );

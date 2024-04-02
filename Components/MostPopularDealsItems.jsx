@@ -11,6 +11,7 @@ const MostPopularDealsItems = ({ item, onPress }) => {
       style={styles.mostPopularDealsCard}
       onPress={() => onPress(item)}>
       <Image source={{ uri: item.image_url }} style={styles.mostPopularDealsImage} />
+      <Text style={styles.dealTitle}>{item.title}</Text> 
       <Text>votes: {item.votes}</Text>
     </TouchableOpacity>
   );
