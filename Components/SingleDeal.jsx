@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const url =
   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
 
-const SingleDeal = ({ route, onShare }) => { 
+const SingleDeal = ({ route }) => { 
   const { deal } = route.params;
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
