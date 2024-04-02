@@ -9,6 +9,7 @@ import LoginScreen from './screens/LoginScreen';
 import SingleDeal from './Components/SingleDeal';
 import MapScreen from './screens/MapScreen';
 import PostDealScreen from './screens/PostDealScreen';
+import SingleDealScreen from './screens/SingleDealScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const DealsStack = () => {
@@ -20,8 +21,8 @@ const DealsStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SingleDeal"
-        component={SingleDeal}
+        name="SingleDealScreen"
+        component={SingleDealScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen 

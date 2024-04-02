@@ -35,7 +35,7 @@ const SingleDealComments = ({ deal }) => {
       const authorIds = comments
         .map(comment => comment.author)
         .filter(authorId => authorId !== undefined);
-  
+      
       if (authorIds.length === 0) {
         return;
       }
@@ -51,6 +51,7 @@ const SingleDealComments = ({ deal }) => {
   
       const authorMap = {};
       data.forEach(author => {
+        
         authorMap[author.user_id] = author.username;
       });
   

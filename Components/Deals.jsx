@@ -104,7 +104,7 @@ const Deals = () => {
   };
   
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDeal", { deal });
+    navigation.navigate("SingleDealScreen", { deal });
   };
 
   return (<View>
@@ -154,7 +154,8 @@ const Deals = () => {
         numColumns={1}
         contentContainerStyle={styles.dealsList}
       />
-    </View></View>
+    </View>
+  </View>
   );
 };
 

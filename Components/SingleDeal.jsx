@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, Pressable, Share, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  Share,
+  ActivityIndicator,
+} from "react-native";
 import { styles } from "../styles";
 import SingleDealComments from "./SingleDealComments";
 import CommentsForm from "./CommentsForm";
 import { supabase } from "../lib/supabase";
 import { ScrollView } from "react-native-gesture-handler";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
-const url = "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
+const url =
+  "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
 
 const SingleDeal = ({ route }) => {
   const { deal } = route.params;
@@ -91,9 +99,9 @@ const SingleDeal = ({ route }) => {
   const handleVote = async (voteType) => {
     try {
       let voteIncrement = 0;
-      if (voteType === 'up') {
+      if (voteType === "up") {
         voteIncrement = 1;
-      } else if (voteType === 'down') {
+      } else if (voteType === "down") {
         voteIncrement = -1;
       }
 
@@ -108,11 +116,10 @@ const SingleDeal = ({ route }) => {
 
       console.log("Vote updated successfully:", voteType);
 
-      setDealData(prevDealData => ({
+      setDealData((prevDealData) => ({
         ...prevDealData,
-        votes: prevDealData.votes + voteIncrement
+        votes: prevDealData.votes + voteIncrement,
       }));
-
     } catch (error) {
       setError(error.message);
     }
@@ -134,15 +141,15 @@ const SingleDeal = ({ route }) => {
     }
   };
 
-  const formattedDate = new Date(deal.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+  const formattedDate = new Date(deal.created_at).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
 
-  const formattedTime = new Date(deal.created_at).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
+  const formattedTime = new Date(deal.created_at).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
   });
 
   return (
@@ -150,13 +157,26 @@ const SingleDeal = ({ route }) => {
       <View style={styles.singleDealContainer}>
         <View style={styles.singleDealsCard}>
           <View style={styles.singleDealsImageContainer}>
-            <Image source={{ uri: deal.image_url }} style={styles.SingleDealsImage} />
+            <Image
+              source={{ uri: deal.image_url }}
+              style={styles.SingleDealsImage}
+            />
           </View>
           <View style={styles.voteButtons}>
-              <FontAwesome name="thumbs-down" size={24} color="white" onPress={() => handleVote('down')} />
-              <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-              <FontAwesome name="thumbs-up" size={24} color="white" onPress={() => handleVote('up')} />
-            </View>
+            <FontAwesome
+              name="thumbs-down"
+              size={24}
+              color="white"
+              onPress={() => handleVote("down")}
+            />
+            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
+            <FontAwesome
+              name="thumbs-up"
+              size={24}
+              color="white"
+              onPress={() => handleVote("up")}
+            />
+          </View>
           <View style={styles.singleDealsTextInfo}>
             <View style={styles.dealShareContainer}>
               <Pressable onPress={onShare}>
@@ -167,7 +187,9 @@ const SingleDeal = ({ route }) => {
               </Pressable>
             </View>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
-            <Text style={styles.singleDealPosted}>Posted {formattedTime} on {formattedDate}</Text>
+            <Text style={styles.singleDealPosted}>
+              Posted {formattedTime} on {formattedDate}
+            </Text>
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>
             <Text style={styles.singleDealCat}>{deal.category}</Text>
             <Text style={styles.singleDealBody}>{deal.body}</Text>
