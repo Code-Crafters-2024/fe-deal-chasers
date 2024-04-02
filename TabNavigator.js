@@ -24,7 +24,7 @@ const DealsStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="SingleDeal"
+        name="SingleDealScreen"
         component={SingleDealScreen}
         options={{
           headerShown: false,
@@ -36,7 +36,6 @@ const DealsStack = () => {
           headerTitleStyle: {
             fontSize: 16,
           },
-          // headerTitleAlign: 'center', 
         }}
       />
       <Stack.Screen 
@@ -51,7 +50,6 @@ const DealsStack = () => {
           headerTitleStyle: {
             fontSize: 16,
           },
-          // headerTitleAlign: 'center', 
         }}
       />
     </Stack.Navigator>
@@ -86,7 +84,6 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{
         header: () => <CustomHeader />,
-        // headerShown: false,
         headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
@@ -96,6 +93,7 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Deals" component={DealsStack} options={{
+        header: () => <CustomHeader />,
         headerShown: true,
         headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
@@ -106,6 +104,7 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Add Deal" component={PostDealScreen} options={{
+        header: () => <CustomHeader />,
         headerShown: true,
         headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
