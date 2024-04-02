@@ -83,7 +83,7 @@ const Deals = () => {
   };
 
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDeal", { deal, onShare });
+    navigation.navigate("SingleDealScreen", { deal, onShare });
   };
 
   return (<View>
@@ -133,7 +133,8 @@ const Deals = () => {
         numColumns={1}
         contentContainerStyle={styles.dealsList}
       />
-    </View></View>
+    </View>
+  </View>
   );
 };
 

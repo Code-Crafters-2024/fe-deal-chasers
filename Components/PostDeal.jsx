@@ -30,7 +30,7 @@ const PostDeal = () => {
   const [selectedUrlImage, setSelectedUrlImage] = useState(
     "https://plus.unsplash.com/premium_photo-1664201889896-6a42c19e953a?q=80&w=1536&auto=f[…].3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   );
-  const [imageUrl, setImageUrl] = useState(""); // Add state for image URL
+  const [imageUrl, setImageUrl] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     fetchCategories();
@@ -53,7 +53,7 @@ const PostDeal = () => {
     }
   };
   const handleSubmit = async () => {
-    if (!title || !body || !price || !location ) {
+    if (!title || !body || !price || !location) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
@@ -162,51 +162,48 @@ const PostDeal = () => {
           />
         )}
       </View>
-       <View >
-      <Button title="add image url" onPress={toggleModal} />
-      <Modal isVisible={isModalVisible}>
-        <View >
-            <TextInput
-        style={[styles.input, { backgroundColor: 'white' }]}
-        placeholder="Enter image URL"
-        value={imageUrl}
-        onChangeText={setImageUrl}
-      />
-            <Button title="Add" onPress={toggleModal} />
+      <View>
+        <View style={styles.dropdownContainer}>
+          <View style={[styles.dropdown, styles.categoryDropdown]}>
+            <Picker
+              selectedValue={selectedCategoryId}
+              onValueChange={(itemValue) => handleCategoryChange(itemValue)}
+              style={styles.picker}
+              itemStyle={styles.pickerItem}
+            >
+              <Picker.Item label="Category" value={null} />
+              {categories.map((category) => (
+                <Picker.Item
+                  key={category.category_id}
+                  label={category.name}
+                  value={category.category_id}
+                />
+              ))}
+            </Picker>
+          </View>
         </View>
-      </Modal>
-    </View>
+        <Button title="add image url" onPress={toggleModal} />
+        <Modal isVisible={isModalVisible}>
+          <View>
+            <TextInput
+              style={[styles.input, { backgroundColor: "white" }]}
+              placeholder="Enter image URL"
+              value={imageUrl}
+              onChangeText={setImageUrl}
+            />
+            <Button title="Add" onPress={toggleModal} />
+          </View>
+        </Modal>
+      </View>
       <Button
         title="Choose a Gallery photo"
         theme="primary"
         label="Choose a Gallery photo"
         onPress={pickGalleryImageAsync}
       />
-      <View style={styles.dropdownContainer}>
-        <View style={[styles.dropdown, styles.categoryDropdown]}>
-          <Picker
-            selectedValue={selectedCategoryId}
-            onValueChange={(itemValue) => handleCategoryChange(itemValue)}
-            style={styles.picker}
-            itemStyle={styles.pickerItem}
-          >
-            <Picker.Item label="Category" value={null} />
-            {categories.map((category) => (
-              <Picker.Item
-                key={category.category_id}
-                label={category.name}
-                value={category.category_id}
-              />
-            ))}
-          </Picker>
-        </View>
-        <TouchableOpacity onPress={handleReset} style={styles.resetButton}>
-          <Text style={styles.resetButtonText}>Reset</Text>
-        </TouchableOpacity>
-      </View>
+
       <Button title="Submit Deal" onPress={handleSubmit} />
     </View>
   );
 };
 export default PostDeal;
-
