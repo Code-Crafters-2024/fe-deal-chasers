@@ -56,17 +56,14 @@ export default function ScrollViewDeals() {
     Promise.all(promises).then((data) => {
       const dealsData = data[0];
       const categoriesData = data[1];
-      const properDeals = dealsData.filter((deal) => {
-        const id = deal.deal_id;
-        return id <= 30;
-      });
-      
-      setDeals(properDeals);
+      setDeals(dealsData);
 
-      if(selectedCategory){
-        setCategories(categoriesData.filter((category)=>{
-          return category.category_id === selectedCategory
-        }))
+      if (selectedCategory) {
+        setCategories(
+          categoriesData.filter((category) => {
+            return category.category_id === selectedCategory;
+          })
+        );
       } else {
         setCategories(categoriesData);
       }
@@ -85,7 +82,7 @@ export default function ScrollViewDeals() {
   }, [location]);
 
   useEffect(() => {
-    mapAnimation.addListener(({value}) => {
+    mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3);
       if (index >= deals.length) {
         index = deals.length - 1;
@@ -127,10 +124,10 @@ export default function ScrollViewDeals() {
   };
 
   function handleCategorySelection(category_id) {
-    if(selectedCategory === category_id){
-      setSelectedCategory(null)
+    if (selectedCategory === category_id) {
+      setSelectedCategory(null);
     } else {
-      setSelectedCategory(category_id)
+      setSelectedCategory(category_id);
     }
   }
 
@@ -188,18 +185,23 @@ export default function ScrollViewDeals() {
         }}
       >
         {categories.map((category) => {
-        const selectedStyle = category.category_id === selectedCategory ? {backgroundColor: 'black'} : {}
-        const textStyle = category.category_id === selectedCategory ? {color: 'white'} : {}
-        
-        return (
-          <TouchableOpacity
-            key={category.category_id}
-            style={[styles.chipsItem, selectedStyle]}
-            onPress={()=>handleCategorySelection(category.category_id)}
-          >
-            <Text style={textStyle}>{category.name}</Text>
-          </TouchableOpacity>
-        )})}
+          const selectedStyle =
+            category.category_id === selectedCategory
+              ? { backgroundColor: "black" }
+              : {};
+          const textStyle =
+            category.category_id === selectedCategory ? { color: "white" } : {};
+
+          return (
+            <TouchableOpacity
+              key={category.category_id}
+              style={[styles.chipsItem, selectedStyle]}
+              onPress={() => handleCategorySelection(category.category_id)}
+            >
+              <Text style={textStyle}>{category.name}</Text>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
       <Animated.ScrollView
         ref={scrollRef}
@@ -234,13 +236,18 @@ export default function ScrollViewDeals() {
         )}
       >
         {deals.map((item, index) => (
-          <DealsListCard item={item} index={index} key={item.deal_id} categories={categories} />
+          <DealsListCard
+            item={item}
+            index={index}
+            key={item.deal_id}
+            categories={categories}
+          />
         ))}
       </Animated.ScrollView>
     </View>
   ) : (
     <Text>Loading...</Text>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

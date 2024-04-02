@@ -96,7 +96,7 @@ const SingleDeal = ({ route, onShare }) => {
       console.log("Comment posted successfully:", comment);
       setComments([
         ...comments,
-        { body: comment, author: authorId, deal_id: deal.deal_id },
+        { body: comment, author: user.id, deal_id: deal.deal_id },
       ]);
       fetchComments();
     } catch (error) {
