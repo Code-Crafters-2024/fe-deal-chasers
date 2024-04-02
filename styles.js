@@ -156,7 +156,6 @@ export const styles = StyleSheet.create({
     elevation: 5,
     width: "100%",
     minHeight: 120,
-
   },
 
   dealShareContainer: {
@@ -367,6 +366,7 @@ export const styles = StyleSheet.create({
     // alignItems: 'center',
     padding: 10,
   },
+ 
   datePickerContainer: {
     marginBottom: 20,
     // width: '100%',
@@ -390,22 +390,74 @@ export const styles = StyleSheet.create({
   categoryDropdown: {
     borderWidth: 1,
     borderColor: '#ccc',
-    
+
   },
   pickerItemLabel: {
-    fontSize: 10, 
+    fontSize: 10,
   },
   formLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    textAlign: 'left', 
+    textAlign: 'left',
   },
   dropdownLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    textAlign: 'left', 
+    textAlign: 'left',
+  },
+
+  /* HOME PAGE CSS */
+  homeDealsContainer: {
+    marginTop: 20,
+    flex: 3,
+    marginHorizontal: "auto",
+    width: "auto",
+    padding: 5,
+  },
+  HomeDealsList: {
+    flexGrow: 1,
+    flexDirection: "row",
+  },
+  todaysDealsCard: {
+    position: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    marginBottom: 40,
+    margin: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 160,
+    minHeight: 200,
+  },
+  mostPopularDealsCard: {
+    position: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    marginBottom: 40,
+    margin: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 160,
+    minHeight: 200,
+  },
+  todaysDealsImage: {
+    width: 160,
+    height:160,
+  },
+  mostPopularDealsImage: {
+    width: 160,
+    height:160,
   }
+
 });
 
