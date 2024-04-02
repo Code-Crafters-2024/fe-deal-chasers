@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import { View, TextInput, Button, Alert } from "react-native";
 import { styles } from "../styles";
-
-
-
 
 const CommentsForm = ({ onCommentSubmit }) => {
   const [comment, setComment] = useState("");
+
   const handleCommentSubmit = () => {
-    onCommentSubmit(comment);
+
+    const trimmedComment = comment.trim();
+
+    if (!trimmedComment) {
+      Alert.alert("Error", "Please enter a comment.");
+      return;
+    }
+
+    onCommentSubmit(trimmedComment);
+
     setComment("");
   };
+  
+
   return (
     <View style={styles.commentCard}>
       <TextInput
@@ -18,6 +27,7 @@ const CommentsForm = ({ onCommentSubmit }) => {
         placeholder="Add a comment..."
         value={comment}
         onChangeText={setComment}
+        multiline={true}
       />
       <View style={styles.buttonContainer}>
         <Button
@@ -29,4 +39,5 @@ const CommentsForm = ({ onCommentSubmit }) => {
     </View>
   );
 };
+
 export default CommentsForm;

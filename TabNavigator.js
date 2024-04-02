@@ -23,7 +23,17 @@ const DealsStack = () => {
       <Stack.Screen
         name="SingleDealScreen"
         component={SingleDealScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerTitle: "Back to Deals",
+          headerStyle: {
+            backgroundColor: '#333333',
+          },
+          headerTintColor: '#FF6347',
+          headerTitleStyle: {
+            fontSize: 16,
+          },
+          // headerTitleAlign: 'center', 
+        }}
       />
       <Stack.Screen 
         name="PostDealScreen" 
