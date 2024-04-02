@@ -78,21 +78,14 @@ const Deals = () => {
     fetchDeals();
   };
 
-  const handleAddDeal = () => {
-    navigation.navigate("PostDealScreen");
-  };
-
   const handleDealsPress = (deal) => {
     navigation.navigate("SingleDeal", { deal, onShare });
   };
 
-  return (<View>
-    <TouchableOpacity onPress={handleAddDeal} style={styles.resetButton}>
-      <Text style={styles.resetButtonText}>add a deal</Text>
-    </TouchableOpacity>
+  return (
     <View style={styles.dealsContainer}>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} onSearch={handleSearch} />
-
+  
       <View style={styles.dropdownContainer}>
         <View style={[styles.dropdown, styles.categoryDropdown]}>
           <Picker
@@ -122,19 +115,21 @@ const Deals = () => {
           <Text style={styles.resetButtonText}>Reset</Text>
         </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={deals}
-        renderItem={({ item }) => (
-          <DealItem item={item} categories={categories} onPress={handleDealsPress} />
-        )}
-        keyExtractor={(item) => item.deal_id.toString()}
-        horizontal={false}
-        numColumns={1}
-        contentContainerStyle={styles.dealsList}
-      />
-    </View></View>
-  );
+  
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={deals}
+          renderItem={({ item }) => (
+            <DealItem item={item} categories={categories} onPress={handleDealsPress} />
+          )}
+          keyExtractor={(item) => item.deal_id.toString()}
+          horizontal={false}
+          numColumns={1}
+          contentContainerStyle={styles.dealsList}
+        />
+      </View>
+    </View>
+  );  
 };
 
 export default Deals;
