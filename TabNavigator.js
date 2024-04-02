@@ -24,6 +24,7 @@ const DealsStack = () => {
         name="SingleDealScreen"
         component={SingleDealScreen}
         options={{
+          headerShown: false,
           headerTitle: "Back to Deals",
           headerStyle: {
             backgroundColor: '#333333',
@@ -38,7 +39,17 @@ const DealsStack = () => {
       <Stack.Screen 
         name="PostDealScreen" 
         component={PostDealScreen}
-        options={{ title: "Post Deal" }} 
+        options={{
+          headerTitle: "Back to Deals",
+          headerStyle: {
+            backgroundColor: '#333333',
+          },
+          headerTintColor: '#FF6347',
+          headerTitleStyle: {
+            fontSize: 16,
+          },
+          // headerTitleAlign: 'center', 
+        }}
       />
     </Stack.Navigator>
   );
@@ -55,7 +66,10 @@ const TabNavigator = () => {
             iconName = 'account';
           } else if (route.name === 'Deals') {
             iconName = 'sale';
-          } else if (route.name === 'Login') {
+          } else if (route.name === 'Add Deal') {
+            iconName = 'plus';
+          }
+          else if (route.name === 'Login') {
             iconName = 'login';
           } else if (route.name === 'Map') {
             iconName = 'map-search';
@@ -77,7 +91,8 @@ const TabNavigator = () => {
         }
       }} />
       <Tab.Screen name="Deals" component={DealsStack} options={{
-        headerStyle: { backgroundColor: 'white' },
+        headerShown: true,
+        headerStyle: { backgroundColor: '#333333' },
         headerTitleAlign: 'center',
         headerTintColor: '#FF6347',
         headerTitleStyle: {
@@ -85,6 +100,16 @@ const TabNavigator = () => {
           fontWeight: 'bold',
         }
       }} />
+      <Tab.Screen name="Add Deal" component={PostDealScreen} options={{
+        headerShown: true,
+        headerStyle: { backgroundColor: '#333333' },
+        headerTitleAlign: 'center',
+        headerTintColor: '#FF6347',
+        headerTitleStyle: {
+          fontSize: 20,
+          fontWeight: 'bold',
+        }
+      }} /> 
       <Tab.Screen name="Profile" component={ProfileScreen} options={{
         headerShown: false,
         headerStyle: { backgroundColor: 'white' },

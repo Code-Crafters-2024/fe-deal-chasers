@@ -29,11 +29,11 @@ export const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 40,
-    backgroundColor: "blue",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: "#FF6347",
+    padding: 5,
+    marginVertical: 5,
   },
   buttonText: {
     color: "white",
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     marginTop: 40,
   },
   categoryCard: {
-    position: "relative",
+    position: 'relative',
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
@@ -100,8 +100,8 @@ export const styles = StyleSheet.create({
   },
 
   dropdownContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   dropdown: {
@@ -116,14 +116,14 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   picker: {
-    color: "black",
+    color: 'black',
   },
   pickerItem: {
     color: "#fff",
     fontSize: 10,
   },
   dealsList: {
-    flexGrow: 1,
+
   },
   commentsList: {
     flexGrow: 1,
@@ -137,13 +137,13 @@ export const styles = StyleSheet.create({
   },
 
   dealsContainer: {
+    flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 10,
     marginTop: 10,
-    marginBottom: 190,
   },
   dealsCard: {
-    position: "relative",
+    position: 'relative',
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#ffffff",
@@ -156,11 +156,11 @@ export const styles = StyleSheet.create({
     elevation: 5,
     width: "100%",
     minHeight: 120,
+
   },
 
   dealShareContainer: {
-    position: "absolute",
-    top: 10,
+    position: 'absolute',
     right: 10,
   },
   dealsImage: {
@@ -172,14 +172,14 @@ export const styles = StyleSheet.create({
   priceText: {
     color: "#FF6347",
     fontSize: 13,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   dealsInfo: {
     flex: 1,
   },
   dealsTitle: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 2,
   },
   dealsText: {
@@ -187,7 +187,7 @@ export const styles = StyleSheet.create({
     marginBottom: 2,
   },
   shareContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 10,
   },
@@ -195,6 +195,7 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+
 
   resetButton: {
     backgroundColor: "#FF6347",
@@ -208,13 +209,13 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   getDealButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 15,
     right: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: "#FF6347",
+    borderColor: '#FF6347',
   },
 
   /* SINGLE DEALS CSS */
@@ -228,6 +229,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: "100%",
+
   },
   singleDealsImageContainer: {
     width: "100%",
@@ -258,10 +260,11 @@ export const styles = StyleSheet.create({
     fontSize: 12,
   },
 
+
   /* SINGLE DEALS COMMENTS CSS */
 
   singleDealsCommentsCard: {
-    position: "relative",
+    position: 'relative',
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
     padding: 10,
@@ -291,20 +294,20 @@ export const styles = StyleSheet.create({
   },
   getDealText: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   commentsFormContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
   commentsFormInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     padding: 10,
     marginBottom: 20,
-    width: "70%",
+    width: '70%',
   },
   buttonContainer: {
     paddingVertical: 0,
@@ -328,6 +331,8 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
 
+
+
   /* SEARCH */
   searchContainer: {
     backgroundColor: "white",
@@ -335,14 +340,16 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
+
   /* VOTE BUTTONS */
   voteButtons: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: "#FF6347",
+
   },
   singleDealVote: {
     marginLeft: 10,
@@ -351,53 +358,54 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  homeDealsContainer: {
-    marginTop: 20,
-    flex: 3,
-    marginHorizontal: "auto",
-    width: "auto",
-    padding: 5,
+
+
+  /* POST DEAL FORM CSS */
+  formContainer: {
+    flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    padding: 10,
   },
-  HomeDealsList: {
-    flexGrow: 1,
-    flexDirection: "row",
+  datePickerContainer: {
+    marginBottom: 20,
+    // width: '100%',
   },
-  todaysDealsCard: {
-    position: "center",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    marginBottom: 40,
-    margin: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: 160,
-    minHeight: 200,
+  dateInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+
   },
-  mostPopularDealsCard: {
-    position: "center",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    marginBottom: 40,
-    margin: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: 160,
-    minHeight: 200,
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingHorizontal: 10,
+    marginBottom: 30,
+    borderRadius: 0,
   },
-  todaysDealsImage: {
-    width: 160,
-    height:160,
+  categoryDropdown: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    
   },
-  mostPopularDealsImage: {
-    width: 160,
-    height:160,
+  pickerItemLabel: {
+    fontSize: 10, 
   },
+  formLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'left', 
+  },
+  dropdownLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'left', 
+  }
 });
+
