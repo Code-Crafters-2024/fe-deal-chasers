@@ -17,33 +17,33 @@ const placeholderImageViewerImage = require("../assets/icon.png");
 import ImageViewer from "./ImageViewer";
 
 const PostDeal = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState([53.4460907260892, -2.301016365725]); //location placeholder
-  const [author, setAuthor] = useState(1); //author placeholder
+  const [author, setAuthor] = useState("caca2a4c-3ea8-4059-aec8-18e4d3883552");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [expiry, setExpiry] = useState("");
   const [date, setDate] = useState(new Date());
   const [today, setToday] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [showImageUrlPicker, setShowImageUrlPicker] = useState(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState("");
-  const [selectedUrlImage, setSelectedUrlImage] = useState(
-    "https://plus.unsplash.com/premium_photo-1664201889896-6a42c19e953a?q=80&w=1536&auto=f[…].3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  );
-
   const [imageUrl, setImageUrl] = useState(""); // Add state for image URL
-  // const [isModalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     fetchCategories();
   }, [selectedCategoryId]);
+
+  useEffect(() => {
+    fetchAuthenticatedUser(); // Fetch authenticated user on component mount
+  }, []);
+
   const handleCategoryChange = (value) => {
     setSelectedCategoryId(value);
   };
+
   const fetchCategories = async () => {
     try {
       const { data, error } = await supabase.from("categories").select("*");
@@ -56,11 +56,23 @@ const PostDeal = () => {
       Alert.alert("Error", "Failed to fetch categories. Please try again later.");
     }
   };
-  
+
+  const fetchAuthenticatedUser = async () => {
+    try {
+      const user = supabase.auth.user;
+      if (user) {
+        setAuthor(user_id); // Set the author to the user's UUID
+      }
+    } catch (error) {
+      console.error("Error fetching authenticated user:", error.message);
+      Alert.alert("Error", "Failed to fetch authenticated user.");
+    }
+  };
+
 
   const handleSubmit = async () => {
-    if (!title || !body || !price || !location) {
-      Alert.alert("Error", "Please fill in all fields");
+    if (!title || !body || !price || !location || !selectedGalleryImage) {
+      Alert.alert("Error", "Please fill in all fields and select an image");
       return;
     }
     try {
@@ -71,14 +83,11 @@ const PostDeal = () => {
           price: parseFloat(price),
           location,
           category_id: selectedCategoryId,
-          author,
+          author, // Use the fetched UUID as the author
           expiry: expiry,
           image_url: imageUrl,
         },
       ]);
-
-
-
 
       if (error) {
         console.error("Error posting deal:", error.message);
@@ -86,7 +95,7 @@ const PostDeal = () => {
       } else {
         Alert.alert("Success", "Deal posted successfully");
         setTimeout(() => {
-          navigation.navigate('Deals'); 
+          navigation.navigate('Deals');
         }, 2000);
         setTitle("");
         setBody("");
@@ -98,7 +107,7 @@ const PostDeal = () => {
       Alert.alert("Error", "Failed to post deal. Please try again later.");
     }
   };
-  
+
   const dateOnChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -124,16 +133,18 @@ const PostDeal = () => {
       allowsEditing: true,
       quality: 1,
     });
-    if (!result.canceled) {
-      setSelectedGalleryImage(result.assets[0].uri);
-      console.log(result);
+    if (!result.cancelled) {
+      if (result.assets.length > 0 && result.assets[0].uri) {
+        setSelectedGalleryImage(result.assets[0].uri);
+        setImageUrl(result.assets[0].uri); // Update imageUrl state with selected image URI
+        console.log(result);
+      } else {
+        // Handle the case when no image URI is available
+        console.log("No image URI available");
+        // Display an error message or take appropriate action
+      }
     }
   };
-  
-
-  // const toggleModal = () => {
-  //   setModalVisible(!isModalVisible);
-  // };
 
   const CustomButton = ({ title, onPress }) => {
     return (
@@ -145,8 +156,6 @@ const PostDeal = () => {
       </TouchableOpacity>
     );
   };
-
-
 
   return (
     <View style={styles.formContainer}>
@@ -213,21 +222,6 @@ const PostDeal = () => {
           />
         )}
       </View>
-
-      {/* <View >
-        <Button title="add image url" onPress={toggleModal} />
-        <Modal isVisible={isModalVisible}>
-          <View >
-            <TextInput
-              style={[styles.input, { backgroundColor: 'white' }]}
-              placeholder="Enter image URL"
-              value={imageUrl}
-              onChangeText={setImageUrl}
-            />
-            <Button title="Add" onPress={toggleModal} />
-          </View>
-        </Modal>
-      </View> */}
       <ImageViewer placeholderImageSource={placeholderImageViewerImage} selectedImage={selectedGalleryImage}></ImageViewer>
       <CustomButton title="Select Photo" onPress={pickGalleryImageAsync} />
       <CustomButton title="Submit Deal" onPress={handleSubmit} />
