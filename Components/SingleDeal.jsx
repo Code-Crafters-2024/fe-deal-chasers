@@ -115,7 +115,7 @@ const SingleDeal = ({ route }) => {
       } else if (voteType === "down") {
         voteIncrement = -1;
       }
-
+      console.log(dealData.votes)
       const { data, error } = await supabase
         .from("deals")
         .update({ votes: dealData.votes + voteIncrement })
