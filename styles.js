@@ -375,16 +375,17 @@ export const styles = StyleSheet.create({
     borderColor: '#ccc',
     paddingVertical: 10,
     paddingHorizontal: 10,
-
+    backgroundColor: "white",
   },
   input: {
     width: '100%',
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
-    paddingHorizontal: 10,
-    marginBottom: 30,
+    paddingHorizontal: 5,
+    marginBottom: 5,
     borderRadius: 0,
+    backgroundColor: "white",
   },
   categoryDropdown: {
     borderWidth: 1,
@@ -395,16 +396,18 @@ export const styles = StyleSheet.create({
     fontSize: 10,
   },
   formLabel: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 5,
     textAlign: 'left',
+    color: '#FF6347',
   },
   dropdownLabel: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 5,
     textAlign: 'left',
+    color: '#FF6347',
   },
 
   /* HOME PAGE CSS */

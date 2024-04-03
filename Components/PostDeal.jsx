@@ -163,14 +163,14 @@ const PostDeal = () => {
 
   return (
     <View style={styles.formContainer}>
-      <Text style={styles.formLabel}>Title:</Text>
+      <Text style={styles.formLabel}>Title</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter title"
         value={title}
         onChangeText={setTitle}
       />
-      <Text style={styles.dropdownLabel}>Category:</Text>
+      <Text style={styles.dropdownLabel}>Category</Text>
       <View style={styles.dropdownContainer}>
         <View style={[styles.dropdown, styles.categoryDropdown]}>
           <Picker
@@ -190,7 +190,7 @@ const PostDeal = () => {
           </Picker>
         </View>
       </View>
-      <Text style={styles.formLabel}>Description:</Text>
+      <Text style={styles.formLabel}>Description</Text>
       <TextInput
         style={[styles.input, { height: 80 }]}
         placeholder="Enter description"
@@ -198,7 +198,7 @@ const PostDeal = () => {
         value={body}
         onChangeText={setBody}
       />
-      <Text style={styles.formLabel}>Price:</Text>
+      <Text style={styles.formLabel}>Price</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter price"
@@ -207,6 +207,7 @@ const PostDeal = () => {
         onChangeText={setPrice}
       />
       <View style={styles.datePickerContainer}>
+      <Text style={styles.formLabel}>Expiry date</Text>
         <TouchableOpacity activeOpacity={0.9} onPress={() => setShow(true)}>
           <TextInput
             style={styles.dateInput}
