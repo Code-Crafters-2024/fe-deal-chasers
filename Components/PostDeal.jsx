@@ -13,7 +13,8 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from '@react-navigation/native';
-
+const placeholderImageViewerImage = require("../assets/icon.png");
+import ImageViewer from "./ImageViewer";
 
 const PostDeal = () => {
   const navigation = useNavigation(); 
@@ -119,28 +120,13 @@ const PostDeal = () => {
   };
 
   const pickGalleryImageAsync = async () => {
-    try {
-      const { cancelled, assets } = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        quality: 1,
-      });
-      
-      const avatarFile = selectedGalleryImage
-const { data, error } = await supabase
-  .storage
-  .from('avatars')
-  .upload('public/avatar1.png', avatarFile, {
-    cacheControl: '3600',
-    upsert: false
-  })
-      if (!cancelled && assets.length > 0) {
-        setSelectedGalleryImage(assets[0].uri);
-      } else {
-        console.log("User canceled image selection or no image was selected.");
-      }
-    } catch (error) {
-      console.error("Error picking image from gallery:", error);
-      alert("Failed to pick image from gallery. Please try again.");
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setSelectedGalleryImage(result.assets[0].uri);
+      console.log(result);
     }
   };
   
@@ -242,6 +228,7 @@ const { data, error } = await supabase
           </View>
         </Modal>
       </View> */}
+      <ImageViewer placeholderImageSource={placeholderImageViewerImage} selectedImage={selectedGalleryImage}></ImageViewer>
       <CustomButton title="Select Photo" onPress={pickGalleryImageAsync} />
       <CustomButton title="Submit Deal" onPress={handleSubmit} />
     </View>
