@@ -228,8 +228,9 @@ const PostDeal = () => {
           </View>
         </Modal>
       </View> */}
-      <ImageViewer placeholderImageSource={placeholderImageViewerImage} selectedImage={selectedGalleryImage}></ImageViewer>
-      <CustomButton title="Select Photo" onPress={pickGalleryImageAsync} />
+      <View style={styles.postDealImageContainer}><ImageViewer placeholderImageSource={placeholderImageViewerImage} selectedImage={selectedGalleryImage}></ImageViewer>
+      <CustomButton title="Select Photo" onPress={pickGalleryImageAsync} /></View>
+      
       <CustomButton title="Submit Deal" onPress={handleSubmit} />
     </View>
   );
