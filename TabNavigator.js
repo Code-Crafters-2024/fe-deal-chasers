@@ -30,10 +30,10 @@ const DealsStack = () => {
         name="SingleDealScreen"
         component={SingleDealScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
           headerTitle: "Back to Deals",
           headerStyle: {
-            backgroundColor: "#333333",
+            backgroundColor: "black",
           },
           headerTintColor: "#FF6347",
           headerTitleStyle: {
