@@ -145,8 +145,9 @@ const TabNavigator = () => {
         name="Map"
         component={MapScreen}
         options={{
-          headerShown: false,
-          headerStyle: { backgroundColor: "white" },
+          header: () => <CustomHeader />,
+          headerShown: true,
+          headerStyle: { backgroundColor: "#333333" },
           headerTitleAlign: "center",
           headerTintColor: "#FF6347",
           headerTitleStyle: {
@@ -161,8 +162,9 @@ const TabNavigator = () => {
           name="Profile"
           // component={ProfileScreen}
           options={{
-            headerShown: false,
-            headerStyle: { backgroundColor: "white" },
+            header: () => <CustomHeader />,
+            headerShown: true,
+            headerStyle: { backgroundColor: "#333333" },
             headerTitleAlign: "center",
             headerTintColor: "#FF6347",
             headerTitleStyle: {
@@ -178,8 +180,9 @@ const TabNavigator = () => {
           name="Login"
           component={LoginScreen}
           options={{
-            headerShown: false,
-            headerStyle: { backgroundColor: "white" },
+            header: () => <CustomHeader />,
+            headerShown: true,
+            headerStyle: { backgroundColor: "#333333" },
             headerTitleAlign: "center",
             headerTintColor: "#FF6347",
             headerTitleStyle: {

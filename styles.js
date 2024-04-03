@@ -22,7 +22,6 @@ export const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
@@ -114,6 +113,9 @@ export const styles = StyleSheet.create({
   },
   sortByDropdown: {
     flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: 'white',
   },
   picker: {
     color: 'black',
@@ -121,9 +123,6 @@ export const styles = StyleSheet.create({
   pickerItem: {
     color: "#fff",
     fontSize: 10,
-  },
-  dealsList: {
-
   },
   commentsList: {
     flexGrow: 1,
@@ -390,7 +389,7 @@ export const styles = StyleSheet.create({
   categoryDropdown: {
     borderWidth: 1,
     borderColor: '#ccc',
-
+    backgroundColor: 'white',
   },
   pickerItemLabel: {
     fontSize: 10,
@@ -463,10 +462,10 @@ export const styles = StyleSheet.create({
     padding: 5,
   },
   homeGetDealButton: {
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 7,
+    marginVertical: 2,
     backgroundColor: "#FF6347",
-
   },
   homeGetDealText: {
     color: "white",
