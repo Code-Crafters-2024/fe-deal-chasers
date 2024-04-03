@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Image, Button } from "react-native";
+import { StyleSheet, View, Alert, Image, TouchableOpacity, Text } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 export default function Avatar({ url, size = 150, onUpload }) {
@@ -84,11 +84,13 @@ export default function Avatar({ url, size = 150, onUpload }) {
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
       <View style={{ width: "100%" }}>
-        <Button
-          title={uploading ? "Uploading ..." : "Upload"}
+        <TouchableOpacity
           onPress={uploadAvatar}
+          style={styles.uploadButton}
           disabled={uploading}
-        />
+        >
+          <Text style={styles.uploadButtonText}>{uploading ? "Uploading ..." : "Upload"}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -108,6 +110,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "rgb(200, 200, 200)",
-    borderRadius: 5,
+  },
+  uploadButton: {
+    width: "100%",
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#FF6347",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  uploadButtonText: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

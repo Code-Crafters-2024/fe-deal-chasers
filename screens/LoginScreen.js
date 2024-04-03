@@ -34,12 +34,18 @@ const LoginScreen = ({ navigation }) => {
       })
       .then(() => {
         setLoading(false);
-        navigation.navigate("Home");
+        Alert.alert(
+          "Success",
+          "You have successfully logged in!",
+        );
+        setTimeout(() => navigation.navigate("Home"), 2000);
       })
       .catch((error) => {
+        setLoading(false);
         Alert.alert(error.message);
       });
   };
+
 
   async function signUpUser({ created_at, user_metadata, id }) {
     const { name, username } = user_metadata;
@@ -70,17 +76,21 @@ const LoginScreen = ({ navigation }) => {
       })
       .then((user) => {
         setLoading(false);
-        navigation.navigate("Profile");
+        Alert.alert(
+          "Success",
+          "Successfully signed up!",
+          [{ text: "OK", onPress: () => navigation.navigate("Profile") }]
+        );
       })
       .catch((error) => {
         if (error.message === "Cannot read property 'user' of null") {
           Alert.alert(
-            "error",
+            "Error",
             "This email is already registered with an account",
-            [{ text: "okay", onPress: () => dismissAlert() }]
+            [{ text: "OK", onPress: () => dismissAlert() }]
           );
         } else {
-          Alert.alert(error.message);
+          Alert.alert("Error", error.message);
         }
       });
   };
