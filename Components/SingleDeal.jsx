@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Text,
   View,
   Image,
   Pressable,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { styles } from "../styles";
 import SingleDealComments from "./SingleDealComments";
@@ -13,10 +14,80 @@ import { supabase } from "../lib/supabase";
 import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 import onShare from "./ShareHelper";
+
 
 const url =
   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+async function sendPushNotification(expoPushToken) {
+  console.log("Sending push notification");
+  const notificationToggler = true;
+  if (notificationToggler) {
+    const message = {
+      to: expoPushToken,
+      sound: "default",
+      title: "Deal Chasers",
+      body: "Check out this deal!",
+    };
+
+    await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-encoding": "gzip, deflate",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+  }
+}
+
+async function registerForPushNotificationsAsync() {
+  token = await Notifications.getExpoPushTokenAsync({
+    projectId: Constants.expoConfig.extra.eas.projectId,
+  });
+  let token;
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+    console.log(token);
+  }
+
+  return token.data;
+}
 
 const SingleDeal = ({ route }) => {
   const { deal } = route.params;
@@ -25,11 +96,37 @@ const SingleDeal = ({ route }) => {
   const [error, setError] = useState(null);
   const [dealData, setDealData] = useState(deal);
   const [authorName, setAuthorName] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
   const [hasVoted, setHasVoted] = useState(false)
+
 
   useEffect(() => {
     fetchComments();
     fetchAuthor();
+
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
 
   const fetchComments = async () => {
@@ -131,10 +228,15 @@ const SingleDeal = ({ route }) => {
         ...prevDealData,
         votes: prevDealData.votes + voteIncrement,
       }));
+
+      if (voteType === "up" && dealData.votes + 1 === 100) {
+        sendPushNotification(expoPushToken);
+      }
     } catch (error) {
       setError(error.message);
     }
   };
+
 
   const handleSharePress = () => {
     onShare(deal);
