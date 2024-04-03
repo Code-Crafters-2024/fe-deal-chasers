@@ -177,9 +177,9 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   dealsTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginVertical: 2,
   },
   dealsText: {
     fontSize: 12,
@@ -410,7 +410,7 @@ export const styles = StyleSheet.create({
 
   /* HOME PAGE CSS */
   homeDealsContainer: {
-    marginTop: 20,
+    marginTop: 10,
     flex: 3,
     marginHorizontal: "auto",
     width: "auto",
@@ -423,9 +423,8 @@ export const styles = StyleSheet.create({
   todaysDealsCard: {
     position: "center",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: "#ffffff",
-    marginBottom: 40,
     margin: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -433,14 +432,12 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: 160,
-    minHeight: 200,
   },
   mostPopularDealsCard: {
     position: "center",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: "#ffffff",
-    marginBottom: 40,
     margin: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -448,7 +445,6 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     width: 160,
-    minHeight: 200,
   },
   todaysDealsImage: {
     width: 160,
@@ -462,11 +458,35 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 5,
-    marginRight: 8
   },
-  postDealImageContainer: {
-    flexDirection: 'row',
-    width: '81.5%',
-  }
+  cardContent: {
+    padding: 5,
+  },
+  homeGetDealButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    backgroundColor: "#FF6347",
+
+  },
+  homeGetDealText: {
+    color: "white",
+  },
+  price: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginVertical: 3,
+    textAlign: 'left',
+    color: "#FF6347",
+  },
+  votesTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginVertical: 3,
+    textAlign: 'left',
+    color: "#FF6347",
+  },
+  homeDealTitle: {
+    fontSize: 14,
+  },
 
 });

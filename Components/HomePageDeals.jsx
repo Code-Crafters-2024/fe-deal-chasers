@@ -65,7 +65,7 @@ const HomePageDeals = () => {
     }
   };
 
-  
+
 
   const handleDealsPress = (deal) => {
     navigation.navigate("SingleDealScreen", { deal });
@@ -73,23 +73,22 @@ const HomePageDeals = () => {
 
   return (
     <View style={styles.homeDealsContainer}>
-        <Text style={styles.dealsTitle}>Todays Deals</Text>
-        <FlatList
-          data={todaysDeals.slice(0, 5)}
-          renderItem={({ item }) => (
-            <TodaysDealsItems
-              item={item}
-              categories={categories}
-              onPress={handleDealsPress}
-            />
-          )}
-          keyExtractor={(item) => item.deal_id.toString()}
-          horizontal={true}
-          
-          contentContainerStyle={styles.HomeDealsList}
-        />
+      <Text style={styles.dealsTitle}>Todays Deals</Text>
+      <FlatList
+        data={todaysDeals.slice(0, 5)}
+        renderItem={({ item }) => (
+          <TodaysDealsItems
+            item={item}
+            categories={categories}
+            onPress={handleDealsPress}
+          />
+        )}
+        keyExtractor={(item) => item.deal_id.toString()}
+        horizontal={true}
 
-  
+        contentContainerStyle={styles.HomeDealsList}
+      />
+
       <Text style={styles.dealsTitle}> Most Popular</Text>
       <FlatList
         data={mostPopularDeals.slice(0, 5)}
@@ -102,7 +101,7 @@ const HomePageDeals = () => {
         )}
         keyExtractor={(item) => item.deal_id.toString()}
         horizontal={true}
-        
+
         contentContainerStyle={styles.HomeDealsList}
       />
     </View>

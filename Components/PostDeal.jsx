@@ -61,7 +61,7 @@ const PostDeal = () => {
     try {
       const user = supabase.auth.user;
       if (user) {
-        setAuthor(user_id);
+        setAuthor(user.id);
       }
     } catch (error) {
       console.error("Error fetching authenticated user:", error.message);
