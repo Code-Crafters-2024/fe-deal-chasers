@@ -30,7 +30,7 @@ const PostDeal = () => {
   const [today, setToday] = useState(new Date());
   const [show, setShow] = useState(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState("");
-  const [imageUrl, setImageUrl] = useState(""); // Add state for image URL
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     fetchCategories();
@@ -61,7 +61,7 @@ const PostDeal = () => {
     try {
       const user = supabase.auth.user;
       if (user) {
-        setAuthor(user_id); // Set the author to the user's UUID
+        setAuthor(user_id);
       }
     } catch (error) {
       console.error("Error fetching authenticated user:", error.message);
@@ -83,12 +83,12 @@ const PostDeal = () => {
           price: parseFloat(price),
           location,
           category_id: selectedCategoryId,
-          author, // Use the fetched UUID as the author
+          author,
           expiry: expiry,
           image_url: imageUrl,
         },
       ]);
-
+  
       if (error) {
         console.error("Error posting deal:", error.message);
         Alert.alert("Error", "Failed to post deal. Please try again later.");
@@ -97,10 +97,16 @@ const PostDeal = () => {
         setTimeout(() => {
           navigation.navigate('Deals');
         }, 2000);
+        // Clear all fields
         setTitle("");
         setBody("");
         setPrice("");
         setLocation([53.4460907260892, -2.301016365725]);
+        setSelectedCategoryId(null);
+        setExpiry("");
+        setSelectedGalleryImage("");
+        setImageUrl("");
+        setDate(new Date());
       }
     } catch (error) {
       console.error("Error posting deal:", error.message);
@@ -136,12 +142,10 @@ const PostDeal = () => {
     if (!result.cancelled) {
       if (result.assets.length > 0 && result.assets[0].uri) {
         setSelectedGalleryImage(result.assets[0].uri);
-        setImageUrl(result.assets[0].uri); // Update imageUrl state with selected image URI
+        setImageUrl(result.assets[0].uri);
         console.log(result);
       } else {
-        // Handle the case when no image URI is available
         console.log("No image URI available");
-        // Display an error message or take appropriate action
       }
     }
   };
