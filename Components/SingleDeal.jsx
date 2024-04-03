@@ -25,6 +25,7 @@ const SingleDeal = ({ route }) => {
   const [error, setError] = useState(null);
   const [dealData, setDealData] = useState(deal);
   const [authorName, setAuthorName] = useState("");
+  const [hasVoted, setHasVoted] = useState(false)
 
   useEffect(() => {
     fetchComments();
@@ -125,7 +126,7 @@ const SingleDeal = ({ route }) => {
       }
 
       console.log("Vote updated successfully:", voteType);
-
+      setHasVoted(true)
       setDealData((prevDealData) => ({
         ...prevDealData,
         votes: prevDealData.votes + voteIncrement,
@@ -149,7 +150,6 @@ const SingleDeal = ({ route }) => {
     hour: "numeric",
     minute: "numeric",
   });
-
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.singleDealContainer}>
@@ -160,7 +160,26 @@ const SingleDeal = ({ route }) => {
               style={styles.SingleDealsImage}
             />
           </View>
-          <View style={styles.voteButtons}>
+          {hasVoted ? (<View style={styles.voteButtons}>
+            <FontAwesome
+              name="thumbs-down"
+              size={24}
+              color="grey"
+              
+            />
+            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
+            <FontAwesome
+              name="thumbs-up"
+              size={24}
+              color="grey"
+              
+            />
+            <View style={styles.dealShareContainer}>
+              <Pressable onPress={handleSharePress}>
+                <Icon name="share" size={24} color="white" />
+              </Pressable>
+            </View>
+          </View>) :(<View style={styles.voteButtons}>
             <FontAwesome
               name="thumbs-down"
               size={24}
@@ -180,6 +199,7 @@ const SingleDeal = ({ route }) => {
               </Pressable>
             </View>
           </View>
+          )}
 
           <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
@@ -202,7 +222,7 @@ const SingleDeal = ({ route }) => {
         )}
       </View>
     </ScrollView>
-  );
+  )
 };
 
 export default SingleDeal;
