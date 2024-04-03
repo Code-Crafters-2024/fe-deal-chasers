@@ -1,11 +1,13 @@
 // import { styles } from "../styles";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert } from "react-native";
-import { Button, Input } from "react-native-elements";
+import { StyleSheet, View, Alert, TouchableOpacity, Text } from "react-native";
+import { Input } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 import Avatar from "../Components/AvatarImage";
 
 const ProfileScreen = ({ session }) => {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -72,11 +74,32 @@ const ProfileScreen = ({ session }) => {
     }
   }
 
+  const handleSignOut = () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Sign Out",
+          onPress: async () => {
+            await supabase.auth.signOut();
+            navigation.navigate("Login");
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.avatarContainer}>
         <Avatar
-          size={200}
+          size={100}
           url={avatarUrl}
           onUpload={(url) => {
             setAvatarUrl(url);
@@ -103,26 +126,26 @@ const ProfileScreen = ({ session }) => {
       </View>
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? "Loading ..." : "Update"}
-          onPress={() =>
-            updateProfile({ username, name, avatar_url: avatarUrl })
-          }
+        <TouchableOpacity
+          onPress={() => updateProfile({ username, name, avatar_url: avatarUrl })}
           disabled={loading}
-        />
+          style={styles.profileButton}
+        >
+          <Text style={styles.profilButtonText}>{loading ? "Loading ..." : "Update"}</Text>
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
-      </View>
+      <TouchableOpacity onPress={handleSignOut} style={styles.profileButton}>
+        <Text style={styles.profilButtonText}>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 12,
+    marginTop: 10,
+    padding: 10,
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -130,11 +153,25 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   mt20: {
-    marginTop: 20,
+    marginTop: 10,
   },
   centered: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  profileButton: {
+    width: "100%",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FF6347",
+    padding: 5,
+    marginVertical: 5,
+  },
+  profilButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
