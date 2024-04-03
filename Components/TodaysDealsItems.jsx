@@ -6,13 +6,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const TodaysDealsItems = ({ item, categories, onShare, onPress }) => {
 
   return (
-    <TouchableOpacity
-      style={styles.todaysDealsCard}
-      onPress={() => onPress(item)}>
-      <Image source={{ uri: item.image_url }} style={styles.todaysDealsImage} />
-      <Text style={styles.dealTitle}>{item.title}</Text> 
-      <Text>£{item.price}</Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity
+        style={styles.todaysDealsCard}
+        onPress={() => onPress(item)}>
+        <Image source={{ uri: item.image_url }} style={styles.todaysDealsImage} />
+        <View style={styles.cardContent}>
+          <Text style={styles.homeDealTitle}>{item.title}</Text>
+          <Text style={styles.price}>£{item.price}</Text>
+          <TouchableOpacity
+            style={styles.homeGetDealButton}
+            onPress={() => console.log("Handle Get Deal:", item.link)}>
+            <Text style={styles.homeGetDealText}>Get Deal</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </View>
+
   );
 };
 
