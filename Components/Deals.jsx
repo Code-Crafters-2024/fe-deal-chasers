@@ -2,24 +2,29 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList, TouchableOpacity, Text, Share } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "../styles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { supabase } from '../lib/supabase';
 import DealItem from './DealItem';
 import Search from "./Search";
 import onShare from './ShareHelper';
 
 const Deals = () => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [deals, setDeals] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("date");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
+    if(isFocused){ 
+      fetchDeals();
+  }
     fetchCategories();
-    fetchDeals();
-  }, [selectedCategory, sortBy, searchQuery]);
+    
+  }, [selectedCategory, sortBy, searchQuery, isFocused]);
+
 
   const fetchCategories = async () => {
     try {
@@ -70,7 +75,7 @@ const Deals = () => {
 
   const handleReset = () => {
     setSelectedCategory(null);
-    setSortBy(null);
+    setSortBy("date");
     setSearchQuery("");
   };
 
@@ -79,7 +84,7 @@ const Deals = () => {
   };
 
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDealScreen", { deal, onShare });
+    navigation.navigate("SingleDealScreen", { deal });
   };
 
   return (

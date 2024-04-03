@@ -457,6 +457,16 @@ export const styles = StyleSheet.create({
   mostPopularDealsImage: {
     width: 160,
     height:160,
+  },
+  imageViewerImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 5,
+    marginRight: 8
+  },
+  postDealImageContainer: {
+    flexDirection: 'row',
+    width: '81.5%',
   }
 
 });

@@ -13,36 +13,37 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from '@react-navigation/native';
-
+const placeholderImageViewerImage = require("../assets/icon.png");
+import ImageViewer from "./ImageViewer";
 
 const PostDeal = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState([53.4460907260892, -2.301016365725]); //location placeholder
-  const [author, setAuthor] = useState(1); //author placeholder
+  const [author, setAuthor] = useState("caca2a4c-3ea8-4059-aec8-18e4d3883552");
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [expiry, setExpiry] = useState("");
   const [date, setDate] = useState(new Date());
   const [today, setToday] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [showImageUrlPicker, setShowImageUrlPicker] = useState(false);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState("");
-  const [selectedUrlImage, setSelectedUrlImage] = useState(
-    "https://plus.unsplash.com/premium_photo-1664201889896-6a42c19e953a?q=80&w=1536&auto=f[…].3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  );
-
-  const [imageUrl, setImageUrl] = useState(""); // Add state for image URL
-  // const [isModalVisible, setModalVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     fetchCategories();
   }, [selectedCategoryId]);
+
+  useEffect(() => {
+    fetchAuthenticatedUser(); // Fetch authenticated user on component mount
+  }, []);
+
   const handleCategoryChange = (value) => {
     setSelectedCategoryId(value);
   };
+
   const fetchCategories = async () => {
     try {
       const { data, error } = await supabase.from("categories").select("*");
@@ -55,11 +56,23 @@ const PostDeal = () => {
       Alert.alert("Error", "Failed to fetch categories. Please try again later.");
     }
   };
-  
+
+  const fetchAuthenticatedUser = async () => {
+    try {
+      const user = supabase.auth.user;
+      if (user) {
+        setAuthor(user_id);
+      }
+    } catch (error) {
+      console.error("Error fetching authenticated user:", error.message);
+      Alert.alert("Error", "Failed to fetch authenticated user.");
+    }
+  };
+
 
   const handleSubmit = async () => {
-    if (!title || !body || !price || !location) {
-      Alert.alert("Error", "Please fill in all fields");
+    if (!title || !body || !price || !location || !selectedGalleryImage) {
+      Alert.alert("Error", "Please fill in all fields and select an image");
       return;
     }
     try {
@@ -75,29 +88,32 @@ const PostDeal = () => {
           image_url: imageUrl,
         },
       ]);
-
-
-
-
+  
       if (error) {
         console.error("Error posting deal:", error.message);
         Alert.alert("Error", "Failed to post deal. Please try again later.");
       } else {
         Alert.alert("Success", "Deal posted successfully");
         setTimeout(() => {
-          navigation.navigate('Deals'); 
+          navigation.navigate('Deals');
         }, 2000);
+        // Clear all fields
         setTitle("");
         setBody("");
         setPrice("");
         setLocation([53.4460907260892, -2.301016365725]);
+        setSelectedCategoryId(null);
+        setExpiry("");
+        setSelectedGalleryImage("");
+        setImageUrl("");
+        setDate(new Date());
       }
     } catch (error) {
       console.error("Error posting deal:", error.message);
       Alert.alert("Error", "Failed to post deal. Please try again later.");
     }
   };
-  
+
   const dateOnChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -119,35 +135,20 @@ const PostDeal = () => {
   };
 
   const pickGalleryImageAsync = async () => {
-    try {
-      const { cancelled, assets } = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        quality: 1,
-      });
-      
-      const avatarFile = selectedGalleryImage
-const { data, error } = await supabase
-  .storage
-  .from('avatars')
-  .upload('public/avatar1.png', avatarFile, {
-    cacheControl: '3600',
-    upsert: false
-  })
-      if (!cancelled && assets.length > 0) {
-        setSelectedGalleryImage(assets[0].uri);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      if (result.assets.length > 0 && result.assets[0].uri) {
+        setSelectedGalleryImage(result.assets[0].uri);
+        setImageUrl(result.assets[0].uri);
+        console.log(result);
       } else {
-        console.log("User canceled image selection or no image was selected.");
+        console.log("No image URI available");
       }
-    } catch (error) {
-      console.error("Error picking image from gallery:", error);
-      alert("Failed to pick image from gallery. Please try again.");
     }
   };
-  
-
-  // const toggleModal = () => {
-  //   setModalVisible(!isModalVisible);
-  // };
 
   const CustomButton = ({ title, onPress }) => {
     return (
@@ -159,8 +160,6 @@ const { data, error } = await supabase
       </TouchableOpacity>
     );
   };
-
-
 
   return (
     <View style={styles.formContainer}>
@@ -227,21 +226,7 @@ const { data, error } = await supabase
           />
         )}
       </View>
-
-      {/* <View >
-        <Button title="add image url" onPress={toggleModal} />
-        <Modal isVisible={isModalVisible}>
-          <View >
-            <TextInput
-              style={[styles.input, { backgroundColor: 'white' }]}
-              placeholder="Enter image URL"
-              value={imageUrl}
-              onChangeText={setImageUrl}
-            />
-            <Button title="Add" onPress={toggleModal} />
-          </View>
-        </Modal>
-      </View> */}
+      <ImageViewer placeholderImageSource={placeholderImageViewerImage} selectedImage={selectedGalleryImage}></ImageViewer>
       <CustomButton title="Select Photo" onPress={pickGalleryImageAsync} />
       <CustomButton title="Submit Deal" onPress={handleSubmit} />
     </View>
