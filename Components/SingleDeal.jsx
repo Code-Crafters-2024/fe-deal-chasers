@@ -4,7 +4,6 @@ import {
   View,
   Image,
   Pressable,
-  Share,
   ActivityIndicator,
 } from "react-native";
 import { styles } from "../styles";
@@ -12,8 +11,9 @@ import SingleDealComments from "./SingleDealComments";
 import CommentsForm from "./CommentsForm";
 import { supabase } from "../lib/supabase";
 import { ScrollView } from "react-native-gesture-handler";
-import { FontAwesome } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome";
+import onShare from "./ShareHelper";
 
 const url =
   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
@@ -105,7 +105,7 @@ const SingleDeal = ({ route }) => {
     } catch (error) {
       setError(error.message);
     }
-    };
+  };
 
   const handleVote = async (voteType) => {
     try {
@@ -135,23 +135,10 @@ const SingleDeal = ({ route }) => {
     }
   };
 
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: "Deal Chasers: \n" + url,
-      });
-
-      if (result.action === Share.sharedAction) {
-        console.log("shared");
-      } else if (result.action === Share.dismissedAction) {
-        console.log("dismissed");
-      }
-    } catch (error) {
-      console.error("Error sharing deal:", error.message);
-    }
+  const handleSharePress = () => {
+    onShare(deal);
   };
-
+  
   const formattedDate = new Date(deal.created_at).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -169,11 +156,8 @@ const SingleDeal = ({ route }) => {
         <View style={styles.singleDealsCard}>
           <View style={styles.singleDealsImageContainer}>
             <Image
-             
               source={{ uri: deal.image_url }}
-             
               style={styles.SingleDealsImage}
-           
             />
           </View>
           <View style={styles.voteButtons}>
@@ -191,18 +175,16 @@ const SingleDeal = ({ route }) => {
               onPress={() => handleVote("up")}
             />
             <View style={styles.dealShareContainer}>
-<Pressable onPress={onShare}>
-  <Icon name="share" size={24} color="white" />
-</Pressable>
-</View>
+              <Pressable onPress={handleSharePress}>
+                <Icon name="share" size={24} color="white" />
+              </Pressable>
+            </View>
           </View>
-          
+
           <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
             <Text style={styles.singleDealPosted}>
-              
               Posted {formattedTime} on {formattedDate}
-            
             </Text>
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>
             <Text style={styles.singleDealCat}>{deal.category}</Text>
