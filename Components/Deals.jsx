@@ -14,7 +14,7 @@ const Deals = () => {
   const [deals, setDeals] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("date");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Deals = () => {
 
   const handleReset = () => {
     setSelectedCategory(null);
-    setSortBy(null);
+    setSortBy("date");
     setSearchQuery("");
   };
 
@@ -84,7 +84,7 @@ const Deals = () => {
   };
 
   const handleDealsPress = (deal) => {
-    navigation.navigate("SingleDealScreen", { deal, onShare });
+    navigation.navigate("SingleDealScreen", { deal });
   };
 
   return (
