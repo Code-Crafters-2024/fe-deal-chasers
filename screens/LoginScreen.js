@@ -3,15 +3,29 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { styles } from "../styles";
 import { supabase } from "../lib/supabase";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
+  const [signUp, setSignUp] = useState(false);
+  const disabled =
+    loading ||
+    username === "" ||
+    name === "" ||
+    email === "" ||
+    password === "";
+
+  const dismissAlert = () => {
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    setName("");
+    setLoading(false);
+  };
 
   const handleLogin = () => {
-    console.log("Logging in with email:", email, "and password:", password);
     setLoading(true);
     supabase.auth
       .signInWithPassword({
@@ -20,6 +34,7 @@ const LoginScreen = () => {
       })
       .then(() => {
         setLoading(false);
+        navigation.navigate("Home");
       })
       .catch((error) => {
         Alert.alert(error.message);
@@ -31,12 +46,14 @@ const LoginScreen = () => {
     const { data, error } = await supabase
       .from("users")
       .insert({ name, username, created_at, user_id: id });
-    if (error) Promise.reject(error);
+    if (error) {
+      Promise.reject(error);
+    }
     return data;
   }
 
   const handleSignUp = () => {
-    console.log("Navigating to sign-up screen...");
+    setLoading(true);
     supabase.auth
       .signUp({
         email: email,
@@ -53,15 +70,26 @@ const LoginScreen = () => {
       })
       .then((user) => {
         setLoading(false);
+        navigation.navigate("Profile");
       })
       .catch((error) => {
-        Alert.alert(error.message);
+        if (error.message === "Cannot read property 'user' of null") {
+          Alert.alert(
+            "error",
+            "This email is already registered with an account",
+            [{ text: "okay", onPress: () => dismissAlert() }]
+          );
+        } else {
+          Alert.alert(error.message);
+        }
       });
   };
 
-  return (
+  const disabledButton = disabled ? { backgroundColor: "red" } : null;
+
+  return signUp ? (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Sign Up</Text>
       <TextInput
         style={styles.input}
         onChangeText={(text) => setName(text)}
@@ -91,6 +119,43 @@ const LoginScreen = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
+
+      <TouchableOpacity
+        style={[styles.signUpButton, disabledButton]}
+        onPress={handleSignUp}
+        disabled={disabled}
+      >
+        <Text style={styles.signUpButtonText}>Sign Up</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.signUpText}>
+        Already have an account? Log in below
+      </Text>
+      <TouchableOpacity
+        style={styles.signUpButton}
+        onPress={() => setSignUp(false)}
+      >
+        <Text style={styles.signUpButtonText}>Log In</Text>
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <Text style={styles.title}>Log In</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
       <TouchableOpacity
         style={styles.button}
         onPress={handleLogin}
@@ -103,10 +168,9 @@ const LoginScreen = () => {
       </Text>
       <TouchableOpacity
         style={styles.signUpButton}
-        onPress={handleSignUp}
-        disabled={loading}
+        onPress={() => setSignUp(true)}
       >
-        <Text style={styles.signUpButtonText}>Sign Up</Text>
+        <Text style={styles.signUpButtonText}>Create New Account</Text>
       </TouchableOpacity>
     </View>
   );
