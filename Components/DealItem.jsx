@@ -69,9 +69,8 @@ const DealItem = ({ item, categories, onPress }) => {
       </View>
       <TouchableOpacity
         style={styles.getDealButton}
-        onPress={() => console.log("Handle Get Deal:", item.link)}
-      >
-        <Text style={styles.getDealText}>Get Deal</Text>
+        onPress={() => onPress(item)}>
+        <Text style={styles.getDealText}>Show Deal</Text>
       </TouchableOpacity>
     </TouchableOpacity>
   );

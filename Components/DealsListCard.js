@@ -47,7 +47,6 @@ export default function DealsListCard({ item, index, categories }) {
       />
       <View style={extraStyles.textContent}>
         <Text style={styles.dealsTitle}>{item.title}</Text>
-        <Text style={styles.dealsText}>Category: {itemCategory}</Text>
         <Text style={styles.dealsText}>
           Added: {formatDate(item.created_at)}
         </Text>

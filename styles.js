@@ -187,6 +187,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginVertical: 2,
+    marginEnd: 40,
   },
   dealsText: {
     fontSize: 12,
@@ -471,12 +472,16 @@ export const styles = StyleSheet.create({
   },
   cardContent: {
     padding: 5,
+    height: 50,
   },
   homeGetDealButton: {
     paddingVertical: 2,
     paddingHorizontal: 7,
-    marginVertical: 2,
     backgroundColor: "#FF6347",
+  },
+  getDealContainer: {
+    marginBottom: 5,
+    marginLeft: 5,
   },
   homeGetDealText: {
     color: "white",
@@ -484,19 +489,20 @@ export const styles = StyleSheet.create({
   price: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginVertical: 3,
     textAlign: 'left',
     color: "#FF6347",
   },
   votesTitle: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginVertical: 3,
     textAlign: 'left',
     color: "#FF6347",
   },
   homeDealTitle: {
-    fontSize: 14,
+    fontSize: 12,
+  },
+  cardPrice: {
+    paddingHorizontal: 5,
   },
 
 });

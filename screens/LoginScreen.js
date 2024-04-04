@@ -25,26 +25,35 @@ const LoginScreen = ({ navigation }) => {
     setLoading(false);
   };
 
-  const handleLogin = () => {
-    setLoading(true);
-    supabase.auth
-      .signInWithPassword({
-        email: email,
-        password: password,
-      })
-      .then(() => {
-        setLoading(false);
-        Alert.alert(
-          "Success",
-          "You have successfully logged in!",
-        );
-        setTimeout(() => navigation.navigate("Home"), 2000);
-      })
-      .catch((error) => {
-        setLoading(false);
-        Alert.alert(error.message);
-      });
-  };
+const handleLogin = () => {
+  setLoading(true);
+
+  // Perform client-side validation
+  if (!email || !password) {
+    setLoading(false);
+    Alert.alert("Error", "Please enter both email and password.");
+    return;
+  }
+
+  // Continue with authentication
+  supabase.auth
+    .signInWithPassword({
+      email: email,
+      password: password,
+    })
+    .then(() => {
+      setLoading(false);
+      Alert.alert(
+        "Success",
+        "You have successfully logged in!"
+      );
+      setTimeout(() => navigation.navigate("Home"), 2000);
+    })
+    .catch((error) => {
+      setLoading(false);
+      Alert.alert("Error", error.message);
+    });
+};
 
 
   async function signUpUser({ created_at, user_metadata, id }) {

@@ -99,7 +99,9 @@ const SingleDeal = ({ route }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [hasVoted, setHasVoted] = useState(false);
+  const [hasUpVoted, setHasUpVoted] = useState(false);
+  const [hasDownVoted, setHasDownVoted] = useState(false);
+
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
@@ -215,7 +217,9 @@ const SingleDeal = ({ route }) => {
       let voteIncrement = 0;
       if (voteType === "up") {
         voteIncrement = 1;
+        setHasUpVoted(true);
       } else if (voteType === "down") {
+        setHasDownVoted(true);
         voteIncrement = -1;
       }
       const { data, error } = await supabase
@@ -228,7 +232,7 @@ const SingleDeal = ({ route }) => {
       }
 
       console.log("Vote updated successfully:", voteType);
-      setHasVoted(true);
+
       setDealData((prevDealData) => ({
         ...prevDealData,
         votes: prevDealData.votes + voteIncrement,
@@ -275,6 +279,45 @@ const SingleDeal = ({ route }) => {
       }
     }
   }
+
+  const formattedExpiryDate = new Date(deal.expiry).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }
+  );
+  const resetCurrentVote = async (voteType) => {
+    try {
+      let voteIncrement = 0;
+      if (voteType === "up") {
+        voteIncrement = -1;
+        setHasUpVoted(false);
+      } else if (voteType === "down") {
+        setHasDownVoted(false);
+        voteIncrement = 1;
+      }
+      const { data, error } = await supabase
+        .from("deals")
+        .update({ votes: dealData.votes + voteIncrement })
+        .eq("deal_id", dealData.deal_id);
+
+      if (error) {
+        throw new Error("Error updating vote count: " + error.message);
+      }
+
+      console.log("Vote updated successfully:", voteType);
+
+      setDealData((prevDealData) => ({
+        ...prevDealData,
+        votes: prevDealData.votes + voteIncrement,
+      }));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.singleDealContainer}>
@@ -289,45 +332,88 @@ const SingleDeal = ({ route }) => {
               <View style={styles.SingleDealsImage} />
             )}
           </View>
-          {hasVoted ? (
-            <View style={styles.voteButtons}>
-              <FontAwesome name="thumbs-down" size={24} color="grey" />
-              <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-              <FontAwesome name="thumbs-up" size={24} color="grey" />
-              <View style={styles.dealShareContainer}>
-                <Pressable onPress={handleSharePress}>
-                  <Icon name="share" size={24} color="white" />
-                </Pressable>
-              </View>
+          <View style={styles.voteButtons}>
+            {!hasDownVoted && !hasUpVoted ? (
+              <>
+                <FontAwesome
+                  name="thumbs-down"
+                  size={24}
+                  color="white"
+                  onPress={() => handleVote("down")}
+                />
+
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+
+                <FontAwesome
+                  name="thumbs-up"
+                  size={24}
+                  color="white"
+                  onPress={() => handleVote("up")}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {hasDownVoted ? (
+              <>
+                <FontAwesome
+                  name="thumbs-down"
+                  size={24}
+                  color="crimson"
+                  onPress={() => {
+                    setHasDownVoted(false);
+                    resetCurrentVote("down");
+                  }}
+                />
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+                <FontAwesome name="thumbs-up" size={24} color="grey" />
+              </>
+            ) : (
+              <></>
+            )}
+            {hasUpVoted ? (
+              <>
+                <FontAwesome name="thumbs-down" size={24} color="grey" />
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+                <FontAwesome
+                  name="thumbs-up"
+                  size={24}
+                  color="lime"
+                  onPress={() => {
+                    setHasUpVoted(false);
+                    resetCurrentVote("up");
+                  }}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            <View style={styles.dealShareContainer}>
+              <Pressable onPress={handleSharePress}>
+                <Icon name="share" size={24} color="white" />
+              </Pressable>
             </View>
-          ) : (
-            <View style={styles.voteButtons}>
-              <FontAwesome
-                name="thumbs-down"
-                size={24}
-                color="white"
-                onPress={() => handleVote("down")}
-              />
-              <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-              <FontAwesome
-                name="thumbs-up"
-                size={24}
-                color="white"
-                onPress={() => handleVote("up")}
-              />
-              <View style={styles.dealShareContainer}>
-                <Pressable onPress={handleSharePress}>
-                  <Icon name="share" size={24} color="white" />
-                </Pressable>
-              </View>
-            </View>
-          )}
+          </View>
 
           <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
             <Text style={styles.singleDealPosted}>
               Posted {formattedTime} on {formattedDate}
             </Text>
+            {deal.expiry != undefined ? (
+              <Text style={styles.singleDealBody}>
+                Deal expires: {formattedExpiryDate}
+              </Text>
+            ) : (
+              <></>
+            )}
+
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>
             <Text style={styles.singleDealCat}>{deal.category}</Text>
             <Text style={styles.singleDealBody}>{deal.body}</Text>
