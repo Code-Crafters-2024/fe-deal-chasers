@@ -187,6 +187,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginVertical: 2,
+    marginEnd: 40,
   },
   dealsText: {
     fontSize: 12,

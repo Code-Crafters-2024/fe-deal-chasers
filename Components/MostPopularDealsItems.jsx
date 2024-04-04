@@ -21,8 +21,8 @@ const MostPopularDealsItems = ({ item, onPress }) => {
         <View style={styles.getDealContainer}>
         <TouchableOpacity
             style={styles.homeGetDealButton}
-            onPress={() => console.log("Handle Get Deal:", item.link)}>
-            <Text style={styles.homeGetDealText}>Get Deal</Text>
+            onPress={() => onPress(item)}>
+            <Text style={styles.homeGetDealText}>Show Deal</Text>
           </TouchableOpacity>
           </View>
       </TouchableOpacity>
