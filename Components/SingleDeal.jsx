@@ -19,7 +19,6 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import onShare from "./ShareHelper";
 
-
 const url =
   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
 
@@ -100,10 +99,16 @@ const SingleDeal = ({ route }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [hasVoted, setHasVoted] = useState(false)
-
+  const [hasVoted, setHasVoted] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
+    if (!deal.image_url.startsWith("https://")) {
+      downloadImage(deal.image_url);
+    } else {
+      setImageUrl(deal.image_url);
+    }
+
     fetchComments();
     fetchAuthor();
 
@@ -223,7 +228,7 @@ const SingleDeal = ({ route }) => {
       }
 
       console.log("Vote updated successfully:", voteType);
-      setHasVoted(true)
+      setHasVoted(true);
       setDealData((prevDealData) => ({
         ...prevDealData,
         votes: prevDealData.votes + voteIncrement,
@@ -237,11 +242,10 @@ const SingleDeal = ({ route }) => {
     }
   };
 
-
   const handleSharePress = () => {
     onShare(deal);
   };
-  
+
   const formattedDate = new Date(deal.created_at).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -252,55 +256,71 @@ const SingleDeal = ({ route }) => {
     hour: "numeric",
     minute: "numeric",
   });
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("deals")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const fr = new FileReader();
+      fr.readAsDataURL(data);
+      fr.onload = () => {
+        setImageUrl(fr.result);
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error downloading image: ", error.message);
+      }
+    }
+  }
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.singleDealContainer}>
         <View style={styles.singleDealsCard}>
           <View style={styles.singleDealsImageContainer}>
-            <Image
-              source={{ uri: deal.image_url }}
-              style={styles.SingleDealsImage}
-            />
+            {imageUrl ? (
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.SingleDealsImage}
+              />
+            ) : (
+              <View style={styles.SingleDealsImage} />
+            )}
           </View>
-          {hasVoted ? (<View style={styles.voteButtons}>
-            <FontAwesome
-              name="thumbs-down"
-              size={24}
-              color="grey"
-              
-            />
-            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-            <FontAwesome
-              name="thumbs-up"
-              size={24}
-              color="grey"
-              
-            />
-            <View style={styles.dealShareContainer}>
-              <Pressable onPress={handleSharePress}>
-                <Icon name="share" size={24} color="white" />
-              </Pressable>
+          {hasVoted ? (
+            <View style={styles.voteButtons}>
+              <FontAwesome name="thumbs-down" size={24} color="grey" />
+              <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
+              <FontAwesome name="thumbs-up" size={24} color="grey" />
+              <View style={styles.dealShareContainer}>
+                <Pressable onPress={handleSharePress}>
+                  <Icon name="share" size={24} color="white" />
+                </Pressable>
+              </View>
             </View>
-          </View>) :(<View style={styles.voteButtons}>
-            <FontAwesome
-              name="thumbs-down"
-              size={24}
-              color="white"
-              onPress={() => handleVote("down")}
-            />
-            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-            <FontAwesome
-              name="thumbs-up"
-              size={24}
-              color="white"
-              onPress={() => handleVote("up")}
-            />
-            <View style={styles.dealShareContainer}>
-              <Pressable onPress={handleSharePress}>
-                <Icon name="share" size={24} color="white" />
-              </Pressable>
+          ) : (
+            <View style={styles.voteButtons}>
+              <FontAwesome
+                name="thumbs-down"
+                size={24}
+                color="white"
+                onPress={() => handleVote("down")}
+              />
+              <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
+              <FontAwesome
+                name="thumbs-up"
+                size={24}
+                color="white"
+                onPress={() => handleVote("up")}
+              />
+              <View style={styles.dealShareContainer}>
+                <Pressable onPress={handleSharePress}>
+                  <Icon name="share" size={24} color="white" />
+                </Pressable>
+              </View>
             </View>
-          </View>
           )}
 
           <View style={styles.singleDealsTextInfo}>
@@ -324,7 +344,7 @@ const SingleDeal = ({ route }) => {
         )}
       </View>
     </ScrollView>
-  )
+  );
 };
 
 export default SingleDeal;
