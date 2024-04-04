@@ -253,6 +253,14 @@ const SingleDeal = ({ route }) => {
     minute: "numeric",
   });
 
+  const formattedExpiryDate = new Date(deal.expiry).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }
+  );
   const resetCurrentVote = async (voteType) => {
     try {
       let voteIncrement = 0;
@@ -367,6 +375,14 @@ const SingleDeal = ({ route }) => {
             <Text style={styles.singleDealPosted}>
               Posted {formattedTime} on {formattedDate}
             </Text>
+            {deal.expiry != undefined ? (
+              <Text style={styles.singleDealBody}>
+                Deal expires: {formattedExpiryDate}
+              </Text>
+            ) : (
+              <></>
+            )}
+
             <Text style={styles.singleDealCat}>Author: {authorName}</Text>
             <Text style={styles.singleDealCat}>{deal.category}</Text>
             <Text style={styles.singleDealBody}>{deal.body}</Text>
