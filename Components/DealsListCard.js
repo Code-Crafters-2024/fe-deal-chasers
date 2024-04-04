@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "../styles";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { supabase } from "../lib/supabase";
+
 import {
   Text,
   View,
@@ -18,6 +20,36 @@ const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 
 export default function DealsListCard({ item, index, categories }) {
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (!item.image_url.startsWith("https://")) {
+      downloadImage(item.image_url);
+    } else {
+      setImageUrl(item.image_url);
+    }
+  }, []);
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("deals")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const fr = new FileReader();
+      fr.readAsDataURL(data);
+      fr.onload = () => {
+        setImageUrl(fr.result);
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error downloading image: ", error.message);
+      }
+    }
+  }
+
   let itemCategory = "";
 
   for (let i = 0; i < categories.length; i++) {
@@ -41,7 +73,7 @@ export default function DealsListCard({ item, index, categories }) {
   return (
     <View style={extraStyles.card}>
       <Image
-        source={{ uri: item.image_url }}
+        source={{ uri: imageUrl }}
         style={extraStyles.cardImage}
         resizeMode="cover"
       />
