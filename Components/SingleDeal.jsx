@@ -19,7 +19,6 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import onShare from "./ShareHelper";
 
-
 const url =
   "https://www.amazon.co.uk/Shark-NZ690UK-Lift-Away-Anti-Allergen-Turquoise/dp/B0B3RY7Y8L?ref_=Oct_DLandingS_D_3bc4d327_3&th=1"; // Placeholder sharing url
 
@@ -100,8 +99,8 @@ const SingleDeal = ({ route }) => {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const [hasVoted, setHasVoted] = useState(false)
-
+  const [hasUpVoted, setHasUpVoted] = useState(false);
+  const [hasDownVoted, setHasDownVoted] = useState(false);
 
   useEffect(() => {
     fetchComments();
@@ -210,7 +209,9 @@ const SingleDeal = ({ route }) => {
       let voteIncrement = 0;
       if (voteType === "up") {
         voteIncrement = 1;
+        setHasUpVoted(true);
       } else if (voteType === "down") {
+        setHasDownVoted(true);
         voteIncrement = -1;
       }
       const { data, error } = await supabase
@@ -223,7 +224,7 @@ const SingleDeal = ({ route }) => {
       }
 
       console.log("Vote updated successfully:", voteType);
-      setHasVoted(true)
+
       setDealData((prevDealData) => ({
         ...prevDealData,
         votes: prevDealData.votes + voteIncrement,
@@ -237,11 +238,10 @@ const SingleDeal = ({ route }) => {
     }
   };
 
-
   const handleSharePress = () => {
     onShare(deal);
   };
-  
+
   const formattedDate = new Date(deal.created_at).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -252,6 +252,37 @@ const SingleDeal = ({ route }) => {
     hour: "numeric",
     minute: "numeric",
   });
+
+  const resetCurrentVote = async (voteType) => {
+    try {
+      let voteIncrement = 0;
+      if (voteType === "up") {
+        voteIncrement = -1;
+        setHasUpVoted(false);
+      } else if (voteType === "down") {
+        setHasDownVoted(false);
+        voteIncrement = 1;
+      }
+      const { data, error } = await supabase
+        .from("deals")
+        .update({ votes: dealData.votes + voteIncrement })
+        .eq("deal_id", dealData.deal_id);
+
+      if (error) {
+        throw new Error("Error updating vote count: " + error.message);
+      }
+
+      console.log("Vote updated successfully:", voteType);
+
+      setDealData((prevDealData) => ({
+        ...prevDealData,
+        votes: prevDealData.votes + voteIncrement,
+      }));
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.singleDealContainer}>
@@ -262,46 +293,74 @@ const SingleDeal = ({ route }) => {
               style={styles.SingleDealsImage}
             />
           </View>
-          {hasVoted ? (<View style={styles.voteButtons}>
-            <FontAwesome
-              name="thumbs-down"
-              size={24}
-              color="grey"
-              
-            />
-            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-            <FontAwesome
-              name="thumbs-up"
-              size={24}
-              color="grey"
-              
-            />
-            <View style={styles.dealShareContainer}>
-              <Pressable onPress={handleSharePress}>
-                <Icon name="share" size={24} color="white" />
-              </Pressable>
-            </View>
-          </View>) :(<View style={styles.voteButtons}>
-            <FontAwesome
-              name="thumbs-down"
-              size={24}
-              color="white"
-              onPress={() => handleVote("down")}
-            />
-            <Text style={styles.singleDealVote}>Votes: {dealData.votes}</Text>
-            <FontAwesome
-              name="thumbs-up"
-              size={24}
-              color="white"
-              onPress={() => handleVote("up")}
-            />
+          <View style={styles.voteButtons}>
+            {!hasDownVoted && !hasUpVoted ? (
+              <>
+                <FontAwesome
+                  name="thumbs-down"
+                  size={24}
+                  color="white"
+                  onPress={() => handleVote("down")}
+                />
+
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+
+                <FontAwesome
+                  name="thumbs-up"
+                  size={24}
+                  color="white"
+                  onPress={() => handleVote("up")}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {hasDownVoted ? (
+              <>
+                <FontAwesome
+                  name="thumbs-down"
+                  size={24}
+                  color="crimson"
+                  onPress={() => {
+                    setHasDownVoted(false);
+                    resetCurrentVote("down");
+                  }}
+                />
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+                <FontAwesome name="thumbs-up" size={24} color="grey" />
+              </>
+            ) : (
+              <></>
+            )}
+            {hasUpVoted ? (
+              <>
+                <FontAwesome name="thumbs-down" size={24} color="grey" />
+                <Text style={styles.singleDealVote}>
+                  Votes: {dealData.votes}
+                </Text>
+                <FontAwesome
+                  name="thumbs-up"
+                  size={24}
+                  color="lime"
+                  onPress={() => {
+                    setHasUpVoted(false);
+                    resetCurrentVote("up");
+                  }}
+                />
+              </>
+            ) : (
+              <></>
+            )}
             <View style={styles.dealShareContainer}>
               <Pressable onPress={handleSharePress}>
                 <Icon name="share" size={24} color="white" />
               </Pressable>
             </View>
           </View>
-          )}
 
           <View style={styles.singleDealsTextInfo}>
             <Text style={styles.singleDealTitle}>{deal.title}</Text>
@@ -324,7 +383,7 @@ const SingleDeal = ({ route }) => {
         )}
       </View>
     </ScrollView>
-  )
+  );
 };
 
 export default SingleDeal;
