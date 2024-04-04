@@ -127,7 +127,7 @@ const TabNavigator = () => {
       />
       <Tab.Screen
         name="Add Deal"
-        component={PostDealScreen}
+        // component={PostDealScreen}
         options={{
           header: () => <CustomHeader />,
           headerShown: true,
@@ -139,7 +139,9 @@ const TabNavigator = () => {
             fontWeight: "bold",
           },
         }}
-      />
+      >
+        {() => <PostDealScreen session={session} />}
+      </Tab.Screen>
 
       <Tab.Screen
         name="Map"

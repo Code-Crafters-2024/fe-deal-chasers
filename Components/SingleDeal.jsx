@@ -102,7 +102,15 @@ const SingleDeal = ({ route }) => {
   const [hasUpVoted, setHasUpVoted] = useState(false);
   const [hasDownVoted, setHasDownVoted] = useState(false);
 
+  const [imageUrl, setImageUrl] = useState(null);
+
   useEffect(() => {
+    if (!deal.image_url.startsWith("https://")) {
+      downloadImage(deal.image_url);
+    } else {
+      setImageUrl(deal.image_url);
+    }
+
     fetchComments();
     fetchAuthor();
 
@@ -252,6 +260,25 @@ const SingleDeal = ({ route }) => {
     hour: "numeric",
     minute: "numeric",
   });
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabase.storage
+        .from("deals")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const fr = new FileReader();
+      fr.readAsDataURL(data);
+      fr.onload = () => {
+        setImageUrl(fr.result);
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log("Error downloading image: ", error.message);
+      }
+    }
+  }
 
   const formattedExpiryDate = new Date(deal.expiry).toLocaleDateString(
     "en-US",
@@ -296,10 +323,14 @@ const SingleDeal = ({ route }) => {
       <View style={styles.singleDealContainer}>
         <View style={styles.singleDealsCard}>
           <View style={styles.singleDealsImageContainer}>
-            <Image
-              source={{ uri: deal.image_url }}
-              style={styles.SingleDealsImage}
-            />
+            {imageUrl ? (
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.SingleDealsImage}
+              />
+            ) : (
+              <View style={styles.SingleDealsImage} />
+            )}
           </View>
           <View style={styles.voteButtons}>
             {!hasDownVoted && !hasUpVoted ? (
