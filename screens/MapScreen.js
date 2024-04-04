@@ -251,14 +251,6 @@ export default function ScrollViewDeals() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: "95%",
-    height: "95%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
   paragraph: {
     fontSize: 18,
     textAlign: "center",
@@ -371,22 +363,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
   },
-  container: {
-    width: "95%",
-    height: "95%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    backgroundColor: "#fff",
-  },
   paragraph: {
     fontSize: 18,
     textAlign: "center",
-  },
-  map: {
-    width: "100%",
-    height: "100%",
   },
   title: {
     fontSize: 24,
