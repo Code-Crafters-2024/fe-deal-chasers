@@ -49,7 +49,6 @@ const SingleDealComments = ({ deal }) => {
       setLoading(false);
     }
   }
-
   return loading ? (
     <ActivityIndicator />
   ) : (
@@ -66,7 +65,15 @@ const SingleDealComments = ({ deal }) => {
               <Text style={styles.singleDealsTitle}>
                 {comment.author} commented
               </Text>
-              <Text style={styles.singleDealsText}>{comment.created_at}</Text>
+              <Text style={styles.singleDealsText}>
+                {new Date(comment.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </Text>
               <Text style={styles.singleDealsText}>{comment.body}</Text>
             </View>
           </TouchableOpacity>
